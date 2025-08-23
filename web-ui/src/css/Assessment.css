@@ -1,0 +1,96 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.details-panel {
+  padding: 1rem 2rem;
+}
+
+.data-panel {
+  padding: 2rem;
+}
+
+.NewForm {
+  display: flex;
+  padding: 0 1rem;
+  max-width: 70rem;
+  align-self: center;
+  flex-direction: column;
+}
+
+.NewForm.content {
+  display: flex;
+  flex-direction: row;
+}
+
+.NewForm .global-btn {
+  align-self: center;
+}
+
+.NewForm p span {
+  font-weight: 700;
+}
+
+.arrows {
+  font-size: 4rem;
+  align-self: center;
+}
+
+.arrows-disabled {
+  font-size: 4rem;
+  align-self: center;
+  color: rgba(128, 128, 128);
+}
+
+.arrows:hover {
+  cursor: pointer;
+}
+
+.arrows:nth-child(1):hover {
+  transform: scale(1.1) translate(-5px)
+}
+
+.arrows:nth-child(3):hover {
+  transform: scale(1.1) translate(5px)
+}
+
+#text {
+  margin-bottom: 20px;
+}
+
+/* Legend Table */
+.legend {
+  margin-bottom: 30px;
+  width: 92%;
+  background-color: var(--table-grey);
+  border-radius: 5px;
+}
+
+.legend-row {
+  display: flex;
+
+  border: solid black;
+  border-width: 0 0 1px 0;
+  padding: 10px;
+}
+
+.legend-row:nth-child(4) {
+  border: none;
+}
+
+.legend-row .key {
+  width: 10%;
+  text-align: center;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.legend-row .desc-1 {
+  width: 40%;
+}
+
+.legend-row .desc-2 {
+  width: 50%;
+}

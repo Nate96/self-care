@@ -1,0 +1,10 @@
+.Home {
+  display: flex;
+  justify-content: center;
+}
+
+.Home .card-container {
+  padding-top: 1%;
+  display: flex;
+  flex-wrap: wrap;
+}

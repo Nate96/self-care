@@ -1,0 +1,28 @@
+:root {
+  --primary-color: rgb(0, 118, 106);
+  --secondary-color: rgb(84, 84, 84);
+  --third-color: white;
+}
+
+.Layout {
+  background: var(--primary-color);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.Layout .item {
+  border: 2px solid var(--third-color);
+  color: var(--third-color);
+  background: var(--secondary-color);
+  margin-right: 40px;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.Layout .item:hover {
+  color: var(--secondary-color);
+  background: var(--third-color);
+}

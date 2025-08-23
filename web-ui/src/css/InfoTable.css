@@ -1,0 +1,88 @@
+.table-info-section {
+  border-spacing: 30px;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+  margin-bottom: 2rem;
+}
+
+.table-info-section tr {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.table-info-section tr th:nth-child(1) {
+  display: flex;
+  justify-content: space-evenly;
+
+  width: 75px;
+}
+
+.table-info-section tr th:nth-child(2) {
+  display: flex;
+  justify-content: center;
+
+  width: 36px;
+  font-size: 20px;
+}
+
+.table-info-section tr th:nth-child(3),
+.table-info-section tr td:nth-child(3) {
+  padding-left: 10px;
+}
+
+.table-info-section tr th:nth-child(1) span {
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.table-info-section tbody tr:nth-child(odd) {
+  background-color: var(--table-grey);
+}
+
+.three-selector {
+  display: flex;
+
+  padding: 5px;
+}
+
+.selector-shared {
+  border: 2px solid black;
+
+  height: 20px;
+  width: 20px;
+}
+
+.selector-shared-selected {
+  background-color: var(--table-dark-grey);
+}
+
+.three-selector:hover .selector-shared {
+  background-color: var(--table-dark-grey);
+}
+
+.selector-shared:hover {
+  background-color: var(--table-dark-grey);
+  cursor: pointer;
+}
+
+.three-selector > .selector-shared:hover ~ .selector-shared {
+  background-color: transparent;
+}
+
+.three-selector-left {
+  border-right: 0;
+  border-radius: 5px 0 0 5px;
+}
+
+.three-selector-right {
+  border-left: 0;
+  border-radius: 0 5px 5px 0;
+}
+
+.one-selector {
+  margin: 5px;
+  border-radius: 5px;
+}
