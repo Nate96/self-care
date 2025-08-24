@@ -1,6 +1,10 @@
 ## Available Scripts
-
 In the project directory, you can run:
+
+### `touch src/config.ts` 
+
+Create the config file for the app
+
 
 ### `npm run dev`
 
