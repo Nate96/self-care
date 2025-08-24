@@ -6,6 +6,7 @@ import NoPage from "./components/NoPage";
 import Assessment from './containers/Assessment';
 
 function App() {
+   console.log("HEAR")
   return (
     <BrowserRouter>
       <Routes>

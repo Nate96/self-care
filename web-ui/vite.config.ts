@@ -5,7 +5,7 @@ import Config from "./src/config"
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: Config.frontendPort,
+    port: 3000 ,
     strictPort: true
   }
 })
