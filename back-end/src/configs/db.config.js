@@ -1,6 +1,11 @@
-const dotenv = require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
 
-const DbConfig = {
+const LITE = { 
+   db: "./DataBase/db.db"
+}
+
+const MSSQL = {
 	user: process.env.DB_USERNAME,
 	password: process.env.DB_PASSWORD,
 	server: process.env.DB_SERVER, 
@@ -11,4 +16,4 @@ const DbConfig = {
     }
 }
 
-module.exports = { DbConfig }
+module.exports = { MSSQL, LITE }
