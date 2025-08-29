@@ -1,20 +1,28 @@
-const config = require('./configs/db.config')
-var sql = require("mssql")
+import config from '../src/configs/db.config'
+import sqlite3 from 'sqlite'
+import { open } from 'sqlite'
+
+(async () => {
+   const db = await({
+      __filename: "../database",
+      driver: sqlite3.Database
+   })
+})
 
 /**
  * Gets all Questions from the database
  * @returns batabase query in JSON
  */
 async function GetCategories() {
-    try {
-        let  pool = await  sql.connect(config.DbConfig);
-        let  categories = await  pool.request().execute('getCategories')
-        
-        return categories.recordset
-    }
-    catch (error) {
-        console.log(error);
-    }
+   try {
+      let pool = await sql.connect(config.DbConfig);
+      let categories = await pool.request().execute('getCategories')
+
+      return categories.recordset
+   }
+   catch (error) {
+      console.log(error);
+   }
 }
 
 /**
@@ -22,15 +30,15 @@ async function GetCategories() {
  * @returns batabase query in JSON
  */
 async function GetQuestions() {
-    try {
-        let  pool = await  sql.connect(config.DbConfig);
-        let  questions = await  pool.request().execute('getQuestions')
-        
-        return questions.recordset
-    }
-    catch (error) {
-        console.log(error);
-    }
+   try {
+      let pool = await sql.connect(config.DbConfig);
+      let questions = await pool.request().execute('getQuestions')
+
+      return questions.recordset
+   }
+   catch (error) {
+      console.log(error);
+   }
 }
 
 /**
@@ -39,17 +47,17 @@ async function GetQuestions() {
  * @returns a JSON object of the crated form
  */
 async function CreateForm(userId) {
-    try {
-        let pool = await sql.connect(config.DbConfig);
-        let insertForm = await  pool.request()
-            .input('UserId', sql.Int, userId)
-            .execute('createForm')
+   try {
+      let pool = await sql.connect(config.DbConfig);
+      let insertForm = await pool.request()
+         .input('UserId', sql.Int, userId)
+         .execute('createForm')
 
-        return insertForm.recordset
-    }
-    catch (error) {
-        console.log(error);
-    }
+      return insertForm.recordset
+   }
+   catch (error) {
+      console.log(error);
+   }
 }
 
 /**
@@ -58,17 +66,17 @@ async function CreateForm(userId) {
  * @returns a JSON object of the form
  */
 async function GetForms(userId) {
-    try {
-        let pool = await  sql.connect(config.DbConfig);
-        let forms = await  pool.request()
-            .input('UserId', sql.Int, userId)
-            .execute('getForm')
+   try {
+      let pool = await sql.connect(config.DbConfig);
+      let forms = await pool.request()
+         .input('UserId', sql.Int, userId)
+         .execute('getForm')
 
-        return forms.recordset
-    }
-    catch (error) {
-        console.log(error);
-    }
+      return forms.recordset
+   }
+   catch (error) {
+      console.log(error);
+   }
 }
 
 /**
@@ -77,21 +85,21 @@ async function GetForms(userId) {
  * @returns a JSON object of the form
  */
 async function CreateUserData(userData) {
-    try {
-        let pool = await  sql.connect(config.DbConfig);
-        let data = await  pool.request()
-            .input('UserId', sql.Int, userData.UserId)
-            .input('QuestionId', sql.Int, userData.QuestionId)
-            .input('FormId', sql.Int, userData.FormId)
-            .input('Answer', sql.Int, userData.Answer)
-            .input('Improve', sql.Bit, userData.Improve)
-            .execute('createUserData')
-             
-        return 'adding user data for form ' + userData.FormId
-    }
-    catch (error) {
-        console.log(error);
-    }   
+   try {
+      let pool = await sql.connect(config.DbConfig);
+      let data = await pool.request()
+         .input('UserId', sql.Int, userData.UserId)
+         .input('QuestionId', sql.Int, userData.QuestionId)
+         .input('FormId', sql.Int, userData.FormId)
+         .input('Answer', sql.Int, userData.Answer)
+         .input('Improve', sql.Bit, userData.Improve)
+         .execute('createUserData')
+
+      return 'adding user data for form ' + userData.FormId
+   }
+   catch (error) {
+      console.log(error);
+   }
 }
 
 /**
@@ -100,17 +108,17 @@ async function CreateUserData(userData) {
  * @returns a JSON object of the form
  */
 async function GeteUserData(userId) {
-    try {
-        let pool = await  sql.connect(config.DbConfig);
-        let userData = await  pool.request()
-            .input('UserId', sql.Int, userId)
-            .execute('getUserData')
+   try {
+      let pool = await sql.connect(config.DbConfig);
+      let userData = await pool.request()
+         .input('UserId', sql.Int, userId)
+         .execute('getUserData')
 
-        return userData.recordset
-    }
-    catch (error) {
-        console.log(error);
-    }
+      return userData.recordset
+   }
+   catch (error) {
+      console.log(error);
+   }
 }
 
 /**
@@ -118,17 +126,17 @@ async function GeteUserData(userId) {
  * @param {number} formId 
  */
 async function GetAssessment(formId) {
-    try {
-        let pool = await sql.connect(config.DbConfig);
-        let userData = await  pool.request()
-            .input('FormId', sql.Int, formId)
-            .execute('getAssessment')
-        
-        return userData.recordset
-    }
-    catch(error) {
-        console.log(error)
-    }
+   try {
+      let pool = await sql.connect(config.DbConfig);
+      let userData = await pool.request()
+         .input('FormId', sql.Int, formId)
+         .execute('getAssessment')
+
+      return userData.recordset
+   }
+   catch (error) {
+      console.log(error)
+   }
 }
 
 /**
@@ -137,17 +145,17 @@ async function GetAssessment(formId) {
  * @returns string
  */
 async function createBasicAnalyse(formId) {
-    try {
-        let pool = await sql.connect(config.DbConfig)
-        let request = await pool.request()
-            .input('formId', sql.Int, formId)
-            .execute('addBasicCalculations')
-        
-        return 'added' + formId
-    }
-    catch(error) {
-        console.log(error)
-    }
+   try {
+      let pool = await sql.connect(config.DbConfig)
+      let request = await pool.request()
+         .input('formId', sql.Int, formId)
+         .execute('addBasicCalculations')
+
+      return 'added' + formId
+   }
+   catch (error) {
+      console.log(error)
+   }
 }
 
 /**
@@ -156,18 +164,18 @@ async function createBasicAnalyse(formId) {
  * @returns list
  */
 async function getBasicAnayse(userId) {
-    try {
-        let pool = await sql.connect(config.DbConfig)
-        let request = await pool.request()
-            .input('userId', sql.Int, userId)
-            .execute('getBasicCalculations')
-        
-        return request.recordset
-    }
-    catch(error) {
-        console.log(error)
-    }
+   try {
+      let pool = await sql.connect(config.DbConfig)
+      let request = await pool.request()
+         .input('userId', sql.Int, userId)
+         .execute('getBasicCalculations')
+
+      return request.recordset
+   }
+   catch (error) {
+      console.log(error)
+   }
 }
 
 
-module.exports = { GetCategories, GetQuestions, CreateForm, GetForms, CreateUserData, GeteUserData, GetAssessment, createBasicAnalyse, getBasicAnayse}
+module.exports = { GetCategories, GetQuestions, CreateForm, GetForms, CreateUserData, GeteUserData, GetAssessment, createBasicAnalyse, getBasicAnayse }

@@ -1,28 +1,26 @@
 {
-   "name": "back-end",
-   "version": "1.0.0",
-   "description": "self-care back-end",
-   "main": "build/index.js",
-   "scripts": {
-      "build": "tsc",
-      "start": "node build/index.js",
-      "dev": "nodemon src/index.ts"
-   },
-   "keywords": [],
-   "author": "",
-   "license": "ISC",
-   "dependencies": {
-      "better-sqlite3": "^12.2.0",
-      "dotenv": "^17.2.1",
-      "express": "^4.19.2",
-      "sqlite3": "^5.1.7"
-   },
-   "devDependencies": {
-      "@types/better-sqlite3": "^7.6.13",
-      "@types/express": "^4.17.21",
-      "@types/node": "^20.19.11",
-      "nodemon": "^3.1.4",
-      "ts-node": "^10.9.2",
-      "typescript": "^5.9.2"
-   }
+  "name": "self-care-backend",
+  "version": "1.0.0",
+  "description": "express js backend for self care",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "express",
+    "self-care"
+  ],
+  "author": "Nate Braukhoff",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "sqlite": "^5.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
