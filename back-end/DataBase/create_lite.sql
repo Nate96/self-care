@@ -87,47 +87,38 @@ INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Keep a c
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Advocate for fair pay, benefits, and other needs', 5, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Overall professional self-care', 5, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 
-DROP TABLE IF EXISTS Users;
-CREATE TABLE Users (
-   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-   UserName TEXT NOT NULL,
-   Password TEXT NOT NULL,
-   CreateDt DATETIME NOT NULL,
-   UpdateDt DATETIME NOT NULL
-);
+-- DROP TABLE IF EXISTS Users;
+-- CREATE TABLE Users (
+--    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+--    UserName TEXT NOT NULL,
+--    Password TEXT NOT NULL,
+--    CreateDt DATETIME NOT NULL,
+--    UpdateDt DATETIME NOT NULL
+-- );
 
-INSERT INTO Users(UserName, Password, CreateDt, UpdateDt) VALUES('squishy', '1234', DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
+-- INSERT INTO Users(UserName, Password, CreateDt, UpdateDt) VALUES('squishy', '1234', DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 
-DROP TABLE IF EXISTS Form;
-CREATE TABLE Form(
-   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-   UserId INT NOT NULL,
-   CreatedDt DATETIME NOT NULL,
-   UpdateDt DATETIME NOT NULL
-);
-
-DROP TABLE IF EXISTS UserData;
-CREATE table UserData (
-   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-   UserId INT NOT NULL,   
+DROP TABLE IF EXISTS Assessment;
+CREATE table Assessment(
+   id         UUID NOT NULL, 
    QuestionId INT NOT NULL,
-   FormId INT NOT NULL,
-   Answer INT NOT NULL,
-   Improve BIT NOT NULL,
-   CreateDt DATETIME NOT NULL,
-   UpdatedDt DATETIME NOT NULL,
+   Answer     INT NOT NULL,
+   Improve    BIT NOT NULL,
+   CreateDt   DATETIME NOT NULL,
+   UpdatedDt  DATETIME NOT NULL,
 
-   FOREIGN KEY(UserId) REFERENCES users(id),
    FOREIGN KEY(QuestionId) REFERENCES Question(id),
-   FOREIGN KEY(FormId) REFERENCES Form(id)
+   PRIMARY KEY (id, QuestionId)
 );
 
 DROP TABLE IF EXISTS BasicCalculations;
 CREATE TABLE BasicCalculations (
    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-   FormId INT NOT NULL,
+   assessment_id UUID NOT NULL,
    TotalStars INT NOT NULL,
    AverageRank FLOAT NOT NULL,
+   CreateDt   DATETIME NOT NULL,
+   UpdatedDt  DATETIME NOT NULL,
 
-   FOREIGN KEY(FormId) REFERENCES Form(id)
+   FOREIGN KEY(assessment_id) REFERENCES Form(id)
 )

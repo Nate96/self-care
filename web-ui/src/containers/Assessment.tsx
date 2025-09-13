@@ -6,9 +6,7 @@ import { Category, Form, Question, UserData, FormResponse} from '../lib/types';
 import FormApi from '../Services/FormApi';
 import AssessmentBuilder from '../Services/AssessmentBuilder';
 
-interface FormProps {
-  readOnly: boolean
-}
+interface FormProps { readOnly: boolean }
 
 export default function Assessment({readOnly}: FormProps) {
   const location = useLocation();
@@ -17,13 +15,20 @@ export default function Assessment({readOnly}: FormProps) {
   const navigate = useNavigate()
 
   useEffect(() => {
-
-    console.log('details', details)
-
-    if(details > -1) {
-      viewAssessment(details)
-    }  
+     buildForm()
   }, [])
+
+  async function buildForm() {
+     if(!readOnly){
+        let categories: Category[] = await FormApi.getCategories()
+        let form: Form = {
+           FormId: "uuid",
+           CreatedDt: Date(),
+           UpdateDt: Date(),
+           Categories: categories}
+        SetForm(form)
+     }
+  }
 
   /**
    * builds a form for a given formId
@@ -31,13 +36,14 @@ export default function Assessment({readOnly}: FormProps) {
    * @returns 
    */
   async function viewAssessment(formId: number) {
-    if(formId == undefined) {
-      const form: Form = { FormId: 0, UserId: 0, CreatedDt: null, UpdateDt: null, Categories: [] }
-      return form
-    }
-
-    const responses: FormResponse[] = await FormApi.getAssessmentReponses(formId)
     const categories: Category[] = await FormApi.getCategories()
+    if(readOnly) {
+      const form: Form = { FormId: 0, UserId: 0, CreatedDt: null, UpdateDt: null, Categories: [] }
+    }
+    else {
+
+    }
+    const responses: FormResponse[] = await FormApi.getAssessmentReponses(formId)
 
     const form: Form = AssessmentBuilder.buildAssessment(categories, responses)
     SetForm(form)

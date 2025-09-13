@@ -5,29 +5,45 @@ export interface BasicAnalyse {
   CreatedDt: Date
 }
 
+export interface DBQuestions {
+  QuestionId: number,
+  Question:   string
+  CategoryId: number,
+  CreateDt:   Date | null,
+  UpdatedDt:  Date | null,
+}
+
 export interface Question {
   QuestionId: number,
-  Question: string
+  Question:   string
   CategoryId: number,
-  CreateDt: Date | null,
-  UpdatedDt: Date | null,
-  Answer: number,
-  Improve: Boolean
+  CreateDt:   Date | null,
+  UpdatedDt:  Date | null,
+  Answer:     number,
+  Improve:    boolean
 }
+
+export interface Categories {
+   id:         number,
+   category:   string,
+   created_dt: string,
+   updated_dt: string,
+
+}
+
 
 export interface Category {
   CategoryId: number,
   Category: string,
   Questions: Question[],
-  CreateDt: Date | null,
-  UpdatedDt: Date | null
+  CreateDt: string | null,
+  UpdatedDt: string | null
 }
 
 export interface Form {
-  FormId: number,
-  UserId: number,
-  CreatedDt: Date | null,
-  UpdateDt: Date | null,
+  FormId: string,
+  CreatedDt: string | null,
+  UpdateDt: string | null,
   Categories: Category[]
 }
 
@@ -45,4 +61,13 @@ export interface FormResponse {
   Question: string, 
   Answer: number, 
   Improve: boolean
+}
+
+export interface Assessment {
+   id:           string,
+   questions_id: string,
+   answer:       number,
+   improve:      boolean,
+   created_dt:   string, 
+   updated_dt:   string
 }

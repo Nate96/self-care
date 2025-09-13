@@ -1,56 +1,56 @@
-import { Form, Category, Question, UserData, BasicAnalyse, FormResponse } from './../lib/types'
+import {Assessment, Category, Question, DBQuestions, BasicAnalyse, Categories, FormResponse } from './../lib/types'
 import Config from '../config'
 
-/**
- * Gets all forms for a given user
- * @param userId 
- * @returns {Form[]}
- */
-async function getUserForms(userId: number): Promise<Form[]> {
-    let body
-    try {
-      let response = await fetch(Config.getForms + userId)
-      body = await response.json()
-  
-      return body
-    }
-    catch(error){
-      console.log(error)
-    }
-  
-    return body
-}
-
-/**
- * gets all caetories
- * @returns {Category[]}
- */
 async function getCategories(): Promise<Category[]> {
-    let body
     try {
-      let response = await fetch(Config.getCategories)
-      body = await response.json()
-      
-      return body
-      
+       let categories: Category[] = []
+       let res = await fetch(Config.getCategories)
+       let cats = await res.json()
+
+       res = await fetch(Config.getQuestions)
+       let ques = await res.json()
+       console.log('quesions', ques)
+
+       for (const c of cats){
+          let category: Category = {
+             CategoryId: c.id,
+             Category:   c.category,
+             Questions:  [],
+             CreateDt:   c.create_dt,
+             UpdatedDt:  c.updated_dt} 
+
+          for (const q of ques) {
+             if (q.category_id == c.id) {
+                let qu: Question = {
+                   QuestionId: q.id,
+                   Question:   q.question,
+                   CategoryId: q.CategoryId, 
+                   CreateDt:   q.CreateDt,
+                   UpdatedDt:  q.UpdatedDt,
+                   Answer:     0,
+                   Improve:    false}
+
+                category.Questions.push(qu)
+             }
+          }
+         categories.push(category)
+       }
+
+       console.log('cats', categories)
+      return categories
     }
     catch(error){
       console.log(error)
+      return []
     }
-    
-    return body
 }
 
-/**
- * Gets all gestions 
- * @returns {Question[]}
- */
-async function getQuestions(): Promise<Question[]> {
+async function getAssessments(): Promise<Assessment[]> {
     let body
     try {
-      let response = await fetch(Config.getQuestions)
+      let response = await fetch(Config.assessments)
       body = await response.json()
-      
+  
       return body
     }
     catch(error){
@@ -60,86 +60,27 @@ async function getQuestions(): Promise<Question[]> {
     return body
 }
 
-/**
- * Gets all userdata for a given user 
- * @param userId 
- * @returns 
- */
-async function getUserData(userId: number): Promise<UserData[]> {
-    let body
-    try {
-        let response = await fetch(Config.getUserData + userId)
-        body = await response.json()
-        
-        return body
-    }
-    catch(error){
-        console.log(error)
-    }
-    
-    return body        
+
+async function addAssessment(assessment: Assessment): Promise<string> { 
+   try {
+      await fetch(Config.assessments, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify(assessment)
+
+      })
+      return `Added ${assessment.id}`
+   }
+   catch(error) {
+      return `Faild to inset ${assessment.id}`
+
+   }
 }
 
-
-/**
- * Adds a new form to the Form table for a given userid
- * @param userId 
- * @returns {number}
- */
-async function createForm(userId: number): Promise<number> {
-  userId = 2 //TODO: Delete when Multiple users are supported
-  let body
-  const requestOptions = {method: 'POST'}
-
-  try {
-    let response = await fetch(Config.createForm + userId, requestOptions)
-    body = await response.json()
-
-    return body[0].FormId
-  }
-  catch(error) {
-    console.log(error)
-  }
-
-  return body[0].FormId
-}
-
-/**
- * Adds to the UserData Table
- * @param userData 
- * @returns {string}
- */
-async function addUserData(userData: UserData): Promise<string> {
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(userData),
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-  }
-  try {
-    const resposne = await fetch(Config.createUserData, requestOptions)
-    const body = await resposne.json()
-
-    return body
-  }
-  catch(error) {
-    console.log(error)
-  }
-
-  return "faild"
-}
-
-/**
- * Gets the Bacis Analyse for every from for a given user
- * @param userId 
- * @returns {BasicAnalyse[]}
- */
 async function getBasicAnalyse(userId: number): Promise<BasicAnalyse[]> {
     let body
     try {
-        let response = await fetch(Config.getAnalysis + userId)
+        let response = await fetch(Config.getAnalysis)
         body = await response.json()
         
         return body
@@ -152,32 +93,6 @@ async function getBasicAnalyse(userId: number): Promise<BasicAnalyse[]> {
 
 }
 
-/**
- * Gets repsonses for a given form
- * @param formId 
- * @returns {FormResponse[]}
- */
-async function getAssessmentReponses(formId: number): Promise<FormResponse[]> {
-  let body
-  try {
-    let response = await fetch(Config.getAssessmentResponse + formId)
-    body = await response.json()
-
-    return body
-  }
-
-  catch(error) {
-    console.log(error)
-  }
-
-  return body
-}
-
-/**
- * Adds form results for a given from in the Basic Analyse table
- * @param formId 
- * @returns {string}
- */
 async function createBasicCalculations(formId: number): Promise<string> {
   let body
   const requestOptions = {method: 'POST'}
@@ -196,12 +111,8 @@ async function createBasicCalculations(formId: number): Promise<string> {
 
 export default {
   getCategories, 
-  getQuestions, 
-  getUserData, 
-  getUserForms, 
-  createForm, 
-  addUserData,
   getBasicAnalyse,
-  getAssessmentReponses,
-  createBasicCalculations
+  createBasicCalculations,
+  addAssessment,
+  getAssessments
 }
