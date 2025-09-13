@@ -1,13 +1,4 @@
 import config from '../src/configs/db.config'
-import sqlite3 from 'sqlite'
-import { open } from 'sqlite'
-
-(async () => {
-   const db = await({
-      __filename: "../database",
-      driver: sqlite3.Database
-   })
-})
 
 /**
  * Gets all Questions from the database
