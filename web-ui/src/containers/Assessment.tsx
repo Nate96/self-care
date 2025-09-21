@@ -3,14 +3,14 @@ import InfoTable from "../components/InfoTable";
 import { useLocation, useNavigate} from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
-import {Category, Question,  Response, BasicCalc, Assessment} from '../lib/types';
+import {Category, Question, Response, BasicCalc, Assessment} from '../lib/types';
 import FormApi from '../Services/FormApi';
 
 import './../css/Assessment.css'
 
 interface FormProps { readOnly: boolean }
 
-export default function Assessment({readOnly}: FormProps) {
+export default function Assess({readOnly}: FormProps) {
   const location = useLocation();
   const { details } = location.state || {};
   const [assessment, SetForm] = React.useState<Assessment>(details);
@@ -164,10 +164,8 @@ export default function Assessment({readOnly}: FormProps) {
       {!readOnly && 
         <div className="button-container">
           <button className="global-btn" onClick={saveAssessment}>Save</button>
-          <button className="global-btn" onClick={clearFormData}>Clear All</button>
         </div>
       }
-      
     </div>
   );
 }

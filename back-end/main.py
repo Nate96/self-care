@@ -20,13 +20,12 @@ app.add_middleware(
 DATABASE = './database.db'
 
 class Response(BaseModel):
-    assessment_id: str
-    question_id:   int
-    category_id:   int
-    answer:        int
-    improve:       bool
-    created_dt:    datetime
-    updated_dt:    datetime
+    AssessmentId: str
+    CategoryId:   int
+    QuestionId:   int
+    Answer:       int
+    Improve:      bool
+    CreatedDt:    datetime
 
 class BasicCalc(BaseModel):
     assessment_id:    str
@@ -106,6 +105,8 @@ def add_response(response: Response):
     cursor = sqlite3.connect(DATABASE).cursor()
     cursor.execute(f"INSERT INTO Response(assessment_id, question_id, category_id, answer, improve, create_dt, updated_dt) VALUES({response.assessment_id},{response.question_id},{response.category_id},{response.answer},{response.improve},{response.created_dt},{response.updated_dt})")
     cursor.close()
+
+    return {"status": "ok"}
 
 
 @app.get("/basic-calc")

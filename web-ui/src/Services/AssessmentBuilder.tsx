@@ -15,13 +15,13 @@ function buildAssessment(categories: Category[], responses: Response[]): Form {
   console.log('builder/res:', responses)
   
   categories.forEach(c => {
-    let categoryQuestions: Response[] = responses.filter(a => a.CategoryId === c.CategoryId)!
+    let categoryQuestions: Response[] = responses.filter(a => a.CategoryId === c.Id)!
     let questions: Question[] = []
     
     categoryQuestions.forEach(q => {
 
       let question: Question = {
-        QuestionId: q.QuestionId,
+        Id: q.QuestionId,
         Question: q.Question,
         CategoryId: q.CategoryId,
         Answer: q.Answer,
@@ -34,7 +34,7 @@ function buildAssessment(categories: Category[], responses: Response[]): Form {
     })
     
     let category: Category = {
-      CategoryId: c.CategoryId,
+      Id: c.Id,
       Category: c.Category,
       Questions: questions,
       CreateDt: null, 

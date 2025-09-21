@@ -120,6 +120,7 @@ async function getBasicCalcs(): Promise<BasicCalc[]> {
 }
 
 async function addResponse(response: Response) {
+   console.log(JSON.stringify(response))
    await fetch(Config.response, {
       method:  'POST',
       headers: {'Content-Type': 'application/json'},

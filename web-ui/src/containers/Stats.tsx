@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
-import FormCard from "../components/FormCard";
+import { useState, useEffect } from "react";
+import Table from 'react-bootstrap/Table';
+import { Link } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { BasicCalc } from "../lib/types";
 import "./../css/Home.css";
 import FormApi from "../Services/FormApi";
-import Table from 'react-bootstrap/Table';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from "react-router-dom";
-import AssessmentBuilder from "../Services/AssessmentBuilder";
 
 const Stats = () => {
   const [basicAnalyse, setBasicAnalyse] = useState<BasicCalc[]>()
