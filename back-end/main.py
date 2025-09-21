@@ -2,6 +2,8 @@ import sqlite3
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from datetime import datetime
 
 app = FastAPI()
 
@@ -17,6 +19,26 @@ app.add_middleware(
 
 DATABASE = './database.db'
 
+class Response(BaseModel):
+    assessment_id: str
+    question_id:   int
+    category_id:   int
+    answer:        int
+    improve:       bool
+    created_dt:    datetime
+    updated_dt:    datetime
+
+class BasicCalc(BaseModel):
+    assessment_id:    str
+    total_stars:      int
+    average_ank:      float
+    physical_avg:     float
+    emotional_avg:    float
+    social_avg:       float
+    spirit_avg:       float
+    professional_avg: float
+    create_dt:        datetime
+    updated_dt:       datetime
 
 @app.get("/")
 def read_root() -> str:
@@ -37,6 +59,7 @@ def get_categories() -> list[dict]:
             "create_dt":  r[2],
             "updated_dt": r[3]})
     
+    cursor.close()
     return categories
 
 @app.get("/questions")
@@ -55,39 +78,55 @@ def get_questions() -> list[dict]:
             "updated_dt":  r[4]})
 
 
+    cursor.close()
     return questions
 
-@app.get("/assessments") 
-def get_forms() -> list[dict]:
+@app.get("/responses/{id}") 
+def get_responses(id: str) -> list[dict]:
     cursor = sqlite3.connect(DATABASE).cursor()
-    rls = cursor.execute(f"SELECT * FROM Assessment GROUP BY id;").fetchall()
+    rls = cursor.execute(f"SELECT * FROM Response WHERE assessment_id == {id}").fetchall()
 
     calcs: list[dict] =[]
 
     for r in rls:
         calcs.append({
-            "id":          r[0],
-            "question_id": r[1],
-            "answer":      r[2],
-            "improve":     r[3], 
-            "created_dt":  r[4],
-            "updated_dt":  r[5]})
+            "assessment_d": r[0],
+            "question_id":  r[1],
+            "category_id":  r[1],
+            "answer":       r[2],
+            "improve":      r[3], 
+            "created_dt":   r[4],
+            "updated_dt":   r[5]})
 
+    cursor.close()
     return calcs
 
-@app.get("/basic-analysis")
+@app.post("/responses")
+def add_response(response: Response):
+    cursor = sqlite3.connect(DATABASE).cursor()
+    cursor.execute(f"INSERT INTO Response(assessment_id, question_id, category_id, answer, improve, create_dt, updated_dt) VALUES({response.assessment_id},{response.question_id},{response.category_id},{response.answer},{response.improve},{response.created_dt},{response.updated_dt})")
+    cursor.close()
+
+
+@app.get("/basic-calc")
 def get_basic_analysis() -> list[dict]:
     cursor = sqlite3.connect(DATABASE).cursor()
-    rls = cursor.execute("SELECT * FROM BasicCalculation;").fetchall()
+    rls = cursor.execute("SELECT * FROM BasicCalculations;").fetchall()
 
     calcs: list[dict] =[]
 
     for r in rls:
         calcs.append({
-            "id":            r[0],
-            "assessment_id": r[1],
-            "total_stars":   r[2],
-            "created_dt":    r[4],
-            "updated_dt":    r[5]})
+            "assessment_id":    r[0],
+            "total_stars":      r[1],
+            "average_rank":     r[2],
+            "created_dt":       r[3],
+            "physical_avg":     r[4],
+            "emotional_avg":    r[5],
+            "social_avg":       r[6],
+            "spirit_avg":       r[7],
+            "professional_avg": r[8],
+            "updated_dt":       r[9]})
 
+    cursor.close()
     return calcs

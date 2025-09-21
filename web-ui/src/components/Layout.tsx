@@ -5,34 +5,18 @@ import './../css/Layout.css';
 import Config from "../config"
 
 const Layout = () => {
-  const [assessment, setAssessment] = React.useState<Form>()
-  useEffect(() => { generateBlankAssessment() }, [])
-
-  async function generateBlankAssessment()  {
-    const categories: Category[] = await getCategories()
-    const questions: Question[] = await getQuestions()
-
-    categories.forEach(category => {
-      category.Questions = []
-      const catigoryQuestions = questions.filter(question => question.CategoryId === category.CategoryId)
-      if(catigoryQuestions)
-        category.Questions = catigoryQuestions
-    })
-    const newForm: Form = {FormId: -1, UserId: 0, Categories: categories, CreatedDt: new Date(), UpdateDt: new Date()}
-    setAssessment(newForm)
-  }
-  
+  useEffect(() => { }, [])
 
   return (
     <>
       <div className="Layout">
-        <Link to="/" className="item">Home</Link>
+        <Link to="/" className="item">new</Link>
+
         <Link 
-          to="/new-assessment" 
+          to="/stats" 
           className="item"
-          state={{ details: assessment}}
         >
-            New Assessment
+            Stats
         </Link>
       </div>
 

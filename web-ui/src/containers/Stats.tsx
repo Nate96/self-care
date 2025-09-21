@@ -1,47 +1,23 @@
 import React, { useState, useEffect } from "react";
 import FormCard from "../components/FormCard";
-import { Form, Category, BasicAnalyse, FormResponse } from "../lib/types";
+import { BasicCalc } from "../lib/types";
 import "./../css/Home.css";
 import FormApi from "../Services/FormApi";
 import Table from 'react-bootstrap/Table';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
 import AssessmentBuilder from "../Services/AssessmentBuilder";
-import {expected} from '../tests/Form.test'
 
 const Stats = () => {
-  const [basicAnalyse, setBasicAnalyse] = useState<BasicAnalyse[]>()
+  const [basicAnalyse, setBasicAnalyse] = useState<BasicCalc[]>()
 
-  async function getBasicAnalyse() {
-    const basicAnalyse: BasicAnalyse[] = await FormApi.getBasicAnalyse(2)
+  async function getBasicCalc() {
+    const table: BasicCalc[] = await FormApi.getBasicCalcs()
     setBasicAnalyse(basicAnalyse)
   }
 
-  //TODO: Implment
-  async function viewAssessment(formId: number): Promise<Form> {
-    let userId = 2
-    
-    if(formId == undefined) {
-      const form: Form = { FormId: 0, UserId: 0, CreatedDt: null, UpdateDt: null, Categories: [] }
-      return form
-    }
-    console.log('form id', formId)
-
-    const responses: FormResponse[] = await FormApi.getAssessmentReponses(formId)
-    const categories: Category[] = await FormApi.getCategories()
-
-    console.log('home/cat:', categories)
-    console.log('home/res:', responses)
-
-    const form: Form = AssessmentBuilder.buildAssessment(categories, responses)
-
-    console.log('home/Assessment', form)
-
-    return form
-  }
-
   useEffect(() => {
-    getBasicAnalyse()
+    getBasicCalc()
   }, [])
 
   return (
@@ -51,9 +27,13 @@ const Stats = () => {
           <thead>
             <tr>
               <th>#</th>
-              <th>created</th>
+              <th>Date</th>
               <th>Average Rank</th>
               <th>Total Stars</th>
+              <th>Pysical Average</th>
+              <th>Emotional Average</th>
+              <th>Socail Average</th>
+              <th>Spirit Average</th>
             </tr>
           </thead>
           <tbody>
@@ -63,7 +43,7 @@ const Stats = () => {
                   <td>
                     <Link
                       to="/view-assessment" 
-                      state={{details: row.FormId}}
+                      state={{details: row.AssesmmentId}}
                       >
                       {index}
                     </Link>
@@ -71,6 +51,10 @@ const Stats = () => {
                   <td>{new Date(row.CreatedDt).toDateString()}</td>
                   <td>{row.AverageRank}</td>
                   <td>{row.TotalStars}</td>
+                  <td>{row.PhysicalAvg}</td>
+                  <td>{row.EmotionalAvg}</td>
+                  <td>{row.SocialAvg}</td>
+                  <td>{row.SpiritAvg}</td>
                 </tr>
               )
             })}

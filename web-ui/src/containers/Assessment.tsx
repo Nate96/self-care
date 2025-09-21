@@ -1,64 +1,56 @@
 import React, {useEffect} from 'react';
 import InfoTable from "../components/InfoTable";
 import { useLocation, useNavigate} from 'react-router-dom'
-import './../css/Assessment.css'
-import { Category, Form, Question, UserData, FormResponse} from '../lib/types';
+import { v4 as uuidv4 } from 'uuid'
+
+import {Category, Question,  Response, BasicCalc, Assessment} from '../lib/types';
 import FormApi from '../Services/FormApi';
-import AssessmentBuilder from '../Services/AssessmentBuilder';
+
+import './../css/Assessment.css'
 
 interface FormProps { readOnly: boolean }
 
 export default function Assessment({readOnly}: FormProps) {
   const location = useLocation();
   const { details } = location.state || {};
-  const [form, SetForm] = React.useState<Form>(details);
+  const [assessment, SetForm] = React.useState<Assessment>(details);
   const navigate = useNavigate()
 
   useEffect(() => {
-     buildForm()
+     buildAssessment()
   }, [])
 
-  async function buildForm() {
+  async function buildAssessment(): Promise<Assessment> {
+
      if(!readOnly){
-        let categories: Category[] = await FormApi.getCategories()
-        let form: Form = {
-           FormId: "uuid",
-           CreatedDt: Date(),
-           UpdateDt: Date(),
-           Categories: categories}
-        SetForm(form)
+        let categories:  Category[] = await FormApi.getCategories()
+        let asssessment: Assessment = {
+           Id:         uuidv4(),
+           CreatedDt:  Date(),
+           UpdateDt:   Date(),
+           Categories: categories
+        }
+
+        SetForm(asssessment)
+        return assessment
+     }
+     else {
+        let categories: Category[] = await FormApi.getCategories(details.id)
+        let asssessment: Assessment = {
+           Id:         details.id,
+           CreatedDt:  categories[0].CreateDt,
+           UpdateDt:   categories[0].UpdatedDt,
+           Categories: categories
+        }
+
+        SetForm(asssessment)
+        return assessment
      }
   }
 
-  /**
-   * builds a form for a given formId
-   * @param formId 
-   * @returns 
-   */
-  async function viewAssessment(formId: number) {
-    const categories: Category[] = await FormApi.getCategories()
-    if(readOnly) {
-      const form: Form = { FormId: 0, UserId: 0, CreatedDt: null, UpdateDt: null, Categories: [] }
-    }
-    else {
-
-    }
-    const responses: FormResponse[] = await FormApi.getAssessmentReponses(formId)
-
-    const form: Form = AssessmentBuilder.buildAssessment(categories, responses)
-    SetForm(form)
-  }
-
-  /**
-   * updates a questions' answer and improve attributes.
-   * @param prop 
-   * @param value 
-   * @param questionId 
-   * @param categoryId 
-   */
   const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
-    let cat: Category = form.Categories.find(c => c.CategoryId == categoryId)!
-    let qu: Question = cat.Questions.find(q => q.QuestionId == questionId)!
+    let cat: Category = assessment.Categories.find(c => c.Id == categoryId)!
+    let qu: Question = cat.Questions.find(q => q.Id == questionId)!
 
     if(prop == "rank"){
        qu.Answer = value
@@ -68,37 +60,52 @@ export default function Assessment({readOnly}: FormProps) {
     }
   }
 
-  
-  async function saveFormData() {
-    let userId= 2 //TODO: Delete when multi user supported
-    let formId: number = await FormApi.createForm(userId)
+  async function saveAssessment() {
+     let averages: number[] = []
+     let star_total: number = 0
+     let total: number = 0
 
-    form.Categories.forEach(category => {
+    assessment.Categories.forEach(category => {
+      let category_total: number = 0
+
       category.Questions.forEach(question => {
-        if(question.Improve === undefined) {
-          question.Improve = false
+        if(question.Improve === undefined) { question.Improve = false }
+        if(question.Answer === undefined) { question.Answer = 0 }
+
+
+        let res: Response = {
+          AssessementId: assessment.Id,
+          CategoryId:    category.Id,
+          QuestionId:    question.Id,
+          Answer:        question.Answer, 
+          Improve:       question.Improve,
+          CreateDt:      Date()
         }
 
-        if(question.Answer === undefined) {
-          question.Answer = 0
-        }
+        category_total += res.Answer
+        total += res.Answer
+        if (res.Improve) { star_total++ }
 
-        let data: UserData = {
-          UserId: userId,
-          QuestionId: question.QuestionId,
-          FormId: formId,
-          Answer: question.Answer, 
-          Improve: question.Improve
-        }
-
-        FormApi.addUserData(data)
+        FormApi.addResponse(res)
       })
+      averages.push(total / category.Questions.length)
     })
     
-    FormApi.createBasicCalculations(formId)
+    let res: BasicCalc = {
+       AssesmmentId: assessment.Id,
+       TotalStars:   star_total,
+       AverageRank:  total / assessment.Categories.length,
+       PhysicalAvg:  averages[0],
+       EmotionalAvg: averages[1],
+       SocialAvg:    averages[2],
+       SpiritAvg:    averages[3],
+       CreatedDt:    Date(),
+    }
+
+    FormApi.addBasicCalc(res)
     
     // go to home page
-    navigate('/') 
+    navigate('/stats') 
   }
 
   const clearFormData = () => {
@@ -145,7 +152,7 @@ export default function Assessment({readOnly}: FormProps) {
         </div>
 
         <div className="panel data-panel">
-          {form?.Categories?.map((category, index) => {
+          {assessment?.Categories?.map((category, index) => {
             return <InfoTable
                       key={index}
                       category={category} 
@@ -156,7 +163,7 @@ export default function Assessment({readOnly}: FormProps) {
       
       {!readOnly && 
         <div className="button-container">
-          <button className="global-btn" onClick={saveFormData}>Save</button>
+          <button className="global-btn" onClick={saveAssessment}>Save</button>
           <button className="global-btn" onClick={clearFormData}>Clear All</button>
         </div>
       }
