@@ -14,17 +14,18 @@ async function getCategories(id?: string): Promise<Category[]> {
           res = await fetch(Config.response)
           let ress = await res.json()
          
-          for (const c of cats){
+          for (const c of cats) {
              let category: Category = {
-                Id: c.id,
+                Id:         c.id,
                 Category:   c.category,
                 Questions:  [],
                 CreateDt:   c.create_dt,
-                UpdatedDt:  c.updated_dt} 
+                UpdatedDt:  c.updated_dt
+             } 
 
              for (const q of ques) {
                 if (q.category_id == c.id) {
-                   let res = ress.find((res: Response) => q.id == res.QuestionId)
+                   let res = ress.find((res: Response) => q.id == res.question_id)
                    let qu: Question = {
                       Id: q.id,
                       Question:   q.question,
@@ -58,11 +59,12 @@ async function getCategories(id?: string): Promise<Category[]> {
 
           for (const c of cats){
              let category: Category = {
-                Id: c.id,
+                Id:         c.id,
                 Category:   c.category,
                 Questions:  [],
                 CreateDt:   c.create_dt,
-                UpdatedDt:  c.updated_dt} 
+                UpdatedDt:  c.updated_dt
+             } 
 
              for (const q of ques) {
                 if (q.category_id == c.id) {
@@ -99,14 +101,16 @@ async function getBasicCalcs(): Promise<BasicCalc[]> {
 
         for (const r of rls) {
            let row: BasicCalc = {
-              AssesmmentId: r.assessment_id,
-              AverageRank:  r.average_rank, 
-              TotalStars:   r.total_stars,
-              PhysicalAvg:  r.physical_avg,
-              EmotionalAvg: r.emotional_avg,
-              SocialAvg:    r.social_avg,
-              SpiritAvg:    r.spirit_avg,
-              CreatedDt:    r.create_dt,
+              assessment_id:    r.assessment_id,
+              total_stars:      r.average_rank, 
+              average_rank:     r.total_stars,
+              physical_avg:     r.physical_avg,
+              emotional_avg:    r.emotional_avg,
+              social_avg:       r.social_avg,
+              spirit_avg:       r.spirit_avg,
+              professional_avg: r.professional_avg,
+              create_dt:        r.create_dt,
+              updated_dt:       r.updated_dt
            }
            analysis.push(row)
         }
@@ -120,7 +124,6 @@ async function getBasicCalcs(): Promise<BasicCalc[]> {
 }
 
 async function addResponse(response: Response) {
-   console.log(JSON.stringify(response))
    await fetch(Config.response, {
       method:  'POST',
       headers: {'Content-Type': 'application/json'},
@@ -136,6 +139,7 @@ async function addBasicCalc(calc: BasicCalc) {
    })
 
 }
+
 
 export default {
   getCategories, 

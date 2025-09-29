@@ -98,6 +98,19 @@ INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Overall 
 
 -- INSERT INTO Users(UserName, Password, CreateDt, UpdateDt) VALUES('squishy', '1234', DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 
+CREATE TABLE BasicCalculations (
+   assessment_id    UUID NOT NULL PRIMARY KEY,
+   total_stars      INT NOT NULL,
+   average_rank     FLOAT NOT NULL,
+   physical_avg     FLOAT NOT NULL,
+   emotional_avg    FLOAT NOT NULL,
+   social_avg       FLOAT NOT NULL,
+   spirit_avg       FLOAT NOT NULL,
+   professional_avg FLOAT NOT NULL,
+   create_dt        DATETIME NOT NULL,
+   updated_dt       DATETIME NOT NULL
+);
+
 DROP TABLE IF EXISTS Response;
 CREATE table Response(
    assessment_id UUID NOT NULL,
@@ -110,21 +123,7 @@ CREATE table Response(
 
    FOREIGN KEY(question_id) REFERENCES Question(id),
    FOREIGN KEY(category_id) REFERENCES Category(id),
+   FOREIGN KEY(assessment_id) REFERENCES BasicCalculations(assessment_id),
    PRIMARY KEY (assessment_id, question_id, category_id)
 );
 
-DROP TABLE IF EXISTS BasicCalculations;
-CREATE TABLE BasicCalculations (
-   assessment_id    UUID NOT NULL,
-   total_stars      INT NOT NULL,
-   average_ank      FLOAT NOT NULL,
-   physical_avg     FLOAT NOT NULL,
-   emotional_avg    FLOAT NOT NULL,
-   social_avg       FLOAT NOT NULL,
-   spirit_avg       FLOAT NOT NULL,
-   professional_avg FLOAT NOT NULL,
-   create_dt        DATETIME NOT NULL,
-   updated_dt       DATETIME NOT NULL,
-
-   FOREIGN KEY(assessment_id) REFERENCES Response(assessment_id)
-)

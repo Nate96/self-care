@@ -1248,9 +1248,8 @@ var expected: Form = {
 	]
 }
 
-describe('Testing Build Assessment', () => {
-    test('Build Assessment', () => {
-		let actual: Assessment = AssessmentBuilder.buildAssessment(form, questions, categories, userData)
+describe('Building Assessments', () => {
+    test('Build an Empty Assessment', () => {
       expect(actual).toStrictEqual(expected);
     })
 })

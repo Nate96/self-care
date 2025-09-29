@@ -12,7 +12,8 @@ const Stats = () => {
 
   async function getBasicCalc() {
     const table: BasicCalc[] = await FormApi.getBasicCalcs()
-    setBasicAnalyse(basicAnalyse)
+    setBasicAnalyse(table)
+    console.log(table)
   }
 
   useEffect(() => {
@@ -25,14 +26,14 @@ const Stats = () => {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>#</th>
               <th>Date</th>
-              <th>Average Rank</th>
               <th>Total Stars</th>
+              <th>Average Rank</th>
               <th>Pysical Average</th>
               <th>Emotional Average</th>
               <th>Socail Average</th>
               <th>Spirit Average</th>
+              <th>Professiontal Average</th>
             </tr>
           </thead>
           <tbody>
@@ -42,24 +43,23 @@ const Stats = () => {
                   <td>
                     <Link
                       to="/view-assessment" 
-                      state={{details: row.AssesmmentId}}
+                      state={{details: row.assessment_id}}
                       >
-                      {index}
+                      {new Date(row.create_dt).toDateString()}
                     </Link>
                     </td>
-                  <td>{new Date(row.CreatedDt).toDateString()}</td>
-                  <td>{row.AverageRank}</td>
-                  <td>{row.TotalStars}</td>
-                  <td>{row.PhysicalAvg}</td>
-                  <td>{row.EmotionalAvg}</td>
-                  <td>{row.SocialAvg}</td>
-                  <td>{row.SpiritAvg}</td>
+                  <td>{row.average_rank}</td>
+                  <td align="right">{row.total_stars}</td>
+                  <td align="right">{row.physical_avg}</td>
+                  <td align="right">{row.emotional_avg}</td>
+                  <td align="right">{row.social_avg}</td>
+                  <td align="right">{row.spirit_avg}</td>
+                  <td align="right">{row.professional_avg}</td>
                 </tr>
               )
             })}
           </tbody>
         </Table>
-
         </div>
     </div>
   );

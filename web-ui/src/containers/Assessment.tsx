@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+
 import InfoTable from "../components/InfoTable";
 import { useLocation, useNavigate} from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
@@ -22,7 +23,7 @@ export default function Assess({readOnly}: FormProps) {
 
   async function buildAssessment(): Promise<Assessment> {
 
-     if(!readOnly){
+     if(!readOnly) {
         let categories:  Category[] = await FormApi.getCategories()
         let asssessment: Assessment = {
            Id:         uuidv4(),
@@ -74,17 +75,18 @@ export default function Assess({readOnly}: FormProps) {
 
 
         let res: Response = {
-          AssessementId: assessment.Id,
-          CategoryId:    category.Id,
-          QuestionId:    question.Id,
-          Answer:        question.Answer, 
-          Improve:       question.Improve,
-          CreateDt:      Date()
+          assessment_id:  assessment.Id,
+          category_id:    category.Id,
+          question_id:    question.Id,
+          answer:         question.Answer, 
+          improve:        question.Improve,
+          create_dt:      "",
+          updated_dt:     "",
         }
 
-        category_total += res.Answer
-        total += res.Answer
-        if (res.Improve) { star_total++ }
+        category_total += res.answer
+        total += res.answer
+        if (res.improve) { star_total++ }
 
         FormApi.addResponse(res)
       })
@@ -92,14 +94,16 @@ export default function Assess({readOnly}: FormProps) {
     })
     
     let res: BasicCalc = {
-       AssesmmentId: assessment.Id,
-       TotalStars:   star_total,
-       AverageRank:  total / assessment.Categories.length,
-       PhysicalAvg:  averages[0],
-       EmotionalAvg: averages[1],
-       SocialAvg:    averages[2],
-       SpiritAvg:    averages[3],
-       CreatedDt:    Date(),
+       assessment_id:    assessment.Id,
+       total_stars:      star_total,
+       average_rank:     total / assessment.Categories.length,
+       physical_avg:     averages[0],
+       emotional_avg:    averages[1],
+       social_avg:       averages[2],
+       spirit_avg:       averages[3],
+       professional_avg: averages[4],
+       create_dt:        "",
+       updated_dt:       "",
     }
 
     FormApi.addBasicCalc(res)
