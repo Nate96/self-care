@@ -1,3 +1,5 @@
+// TODO: total and averages are not working
+// TODO: View assessment is showing a blank page, and can edit the assesment
 import React, {useEffect} from 'react';
 
 import InfoTable from "../components/InfoTable";

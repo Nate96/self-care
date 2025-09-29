@@ -13,7 +13,6 @@ const Stats = () => {
   async function getBasicCalc() {
     const table: BasicCalc[] = await FormApi.getBasicCalcs()
     setBasicAnalyse(table)
-    console.log(table)
   }
 
   useEffect(() => {
