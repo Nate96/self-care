@@ -2,93 +2,56 @@ import { BasicCalc, Category, Question, Response } from './../lib/types'
 import Config from '../config'
 
 async function getCategories(id?: string): Promise<Category[]> {
-   if (id) {
-       try {
-          let categories: Category[] = []
-          let res = await fetch(Config.getCategories)
-          let cats = await res.json()
+   let categories: Category[] = []
+   let cats: any[] = []
+   let ques: any[] = []
+   let ress: any = []
 
-          res = await fetch(Config.getQuestions)
-          let ques = await res.json()
+   try {
+      let  res = await fetch(Config.getCategories)
+      cats = await res.json()
 
-          res = await fetch(Config.response + `${id}`)
-          let ress = await res.json()
-         
-          for (const c of cats) {
-             let category: Category = {
-                Id:         c.id,
-                Category:   c.category,
-                Questions:  [],
-                CreateDt:   c.create_dt,
-                UpdatedDt:  c.updated_dt
-             } 
+      res = await fetch(Config.getQuestions)
+      ques = await res.json()
 
-             for (const q of ques) {
-                if (q.category_id == c.id) {
-                   let res = ress.find((res: Response) => q.id == res.question_id)
-                   let qu: Question = {
-                      Id: q.id,
-                      Question:   q.question,
-                      CategoryId: q.category_id, 
-                      CreateDt:   q.create_dt,
-                      UpdatedDt:  q.updated_dt,
-                      Answer:     res.Answer,
-                      Improve:    res.Improve 
-                   }
-                   category.Questions.push(qu)
-                }
-             }
-            categories.push(category)
-          }
-
-         return categories
-       }
-       catch(error){
-         console.log(error)
-         return []
-       }
+      if (id) {
+         res = await fetch(Config.response + `${id}`)
+         ress = await res.json()
+      }
    }
-   else {
-       try {
-          let categories: Category[] = []
-          let res = await fetch(Config.getCategories)
-          let cats = await res.json()
-
-          res = await fetch(Config.getQuestions)
-          let ques = await res.json()
-
-          for (const c of cats){
-             let category: Category = {
-                Id:         c.id,
-                Category:   c.category,
-                Questions:  [],
-                CreateDt:   c.create_dt,
-                UpdatedDt:  c.updated_dt
-             } 
-
-             for (const q of ques) {
-                if (q.category_id == c.id) {
-                   let qu: Question = {
-                      Id: q.id,
-                      Question:   q.question,
-                      CategoryId: q.category_id, 
-                      CreateDt:   q.create_dt,
-                      UpdatedDt:  q.updated_dt,
-                      Answer:     0,
-                      Improve:    false}
-
-                   category.Questions.push(qu)
-                }
-             }
-            categories.push(category)
-          }
-         return categories
-       }
-       catch(error){
-         console.log(error)
-         return []
-       }
+   catch(error) {
+      console.log(error)
    }
+
+   cats.forEach((c: any) => {
+      let category: Category = {
+         Id:         c.id,
+         Category:   c.category,
+         Questions:  [],
+         CreateDt:   c.create_dt,
+         UpdatedDt:  c.updated_dt
+      }
+
+      let categoryQuestions = ques.filter((q: any) => q.category_id == c.id)
+
+      categoryQuestions.forEach((q: any) => {
+         let questionsRes = ress.find((ress: any) => ress.question_id == q.id)
+
+         let qu: Question = {
+            Id:         q.id,
+            Question:   q.question,
+            CategoryId: q.category_id, 
+            CreateDt:   q.create_dt,
+            UpdatedDt:  q.updated_dt,
+            Answer:     questionsRes ? questionsRes.answer: 0,
+            Improve:    questionsRes ? questionsRes.improve : false 
+         }
+         category.Questions.push(qu)
+      })
+      categories.push(category)
+   })
+
+   return categories
 }
 
 

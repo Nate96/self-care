@@ -81,8 +81,6 @@ def get_questions() -> list[dict]:
 
 @app.get("/responses/{id}") 
 def get_responses(id: str) -> list[dict]:
-    print(id)
-    
     cursor = sqlite3.connect(DATABASE).cursor()
     rls = cursor.execute(f"SELECT * FROM Response WHERE assessment_id == '{id}'").fetchall()
 

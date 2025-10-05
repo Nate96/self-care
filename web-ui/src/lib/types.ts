@@ -18,7 +18,7 @@ export interface Question {
   CategoryId: number,
   Answer:     number,
   Improve:    boolean
-  CreateDt:   string | null,A
+  CreateDt:   string | null,
   UpdatedDt:  string | null,
 }
 

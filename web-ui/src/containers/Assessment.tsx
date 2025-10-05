@@ -45,7 +45,6 @@ export default function Assess({readOnly}: FormProps) {
            UpdateDt:   "",
         }
         SetForm(assmt)
-        console.log(assmt)
      }
   }
 
@@ -88,8 +87,7 @@ export default function Assess({readOnly}: FormProps) {
         total += res.answer
         if (res.improve) { star_total++ }
 
-        console.log(res)
-        //FormApi.addResponse(res)
+        FormApi.addResponse(res)
       })
       averages.push(total / category.Questions.length)
     })
@@ -107,8 +105,7 @@ export default function Assess({readOnly}: FormProps) {
        updated_dt:       "",
     }
 
-      console.log(basicCalc)
-    //FormApi.addBasicCalc(basicCalc)
+    FormApi.addBasicCalc(basicCalc)
     
     // go to home page
     navigate('/stats') 
