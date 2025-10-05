@@ -48,14 +48,14 @@ const Stats = () => {
                       {new Date(row.create_dt).toDateString()}
                     </Link>
                     </td>
-                  <td>{row.total_stars}</td>
-                  <td align="right">{row.physical}</td>
-                  <td align="right">{row.emotional}</td>
-                  <td align="right">{row.social}</td>
-                  <td align="right">{row.spirit}</td>
-                  <td align="right">{row.professional}</td>
-                  <td align="right">{row.total}</td>
-                  <td align="right">{row.average_rank}</td>
+                  <td align="center">{row.total_stars}</td>
+                  <td align="center">{row.physical}</td>
+                  <td align="center">{row.emotional}</td>
+                  <td align="center">{row.social}</td>
+                  <td align="center">{row.spirit}</td>
+                  <td align="center">{row.professional}</td>
+                  <td align="center">{row.total}</td>
+                  <td align="center">{row.average_rank}</td>
                 </tr>
               )
             })}
