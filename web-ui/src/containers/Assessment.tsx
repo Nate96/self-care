@@ -23,35 +23,34 @@ export default function Assess({readOnly}: FormProps) {
      buildAssessment()
   }, [])
 
-  async function buildAssessment(): Promise<Assessment> {
+  async function buildAssessment() {
 
      if(!readOnly) {
         let categories:  Category[] = await FormApi.getCategories()
-        let asssessment: Assessment = {
+        let assmt: Assessment = {
            Id:         uuidv4(),
+           Categories: categories,
            CreatedDt:  Date(),
-           UpdateDt:   Date(),
-           Categories: categories
+           UpdateDt:   Date()
         }
 
-        SetForm(asssessment)
-        return assessment
+        SetForm(assmt)
      }
      else {
-        let categories: Category[] = await FormApi.getCategories(details.id)
-        let asssessment: Assessment = {
-           Id:         details.id,
-           CreatedDt:  categories[0].CreateDt,
-           UpdateDt:   categories[0].UpdatedDt,
-           Categories: categories
+        let categories: Category[] = await FormApi.getCategories(details)
+        let assmt: Assessment = {
+           Id:         details,
+           Categories: categories,
+           CreatedDt:  "",
+           UpdateDt:   "",
         }
-
-        SetForm(asssessment)
-        return assessment
+        SetForm(assmt)
+        console.log(assmt)
      }
   }
 
-  const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
+  const updateQuestion = (prop: string, value: any, questionId: number,
+                          categoryId: number): void => {
     let cat: Category = assessment.Categories.find(c => c.Id == categoryId)!
     let qu: Question = cat.Questions.find(q => q.Id == questionId)!
 
@@ -75,7 +74,6 @@ export default function Assess({readOnly}: FormProps) {
         if(question.Improve === undefined) { question.Improve = false }
         if(question.Answer === undefined) { question.Answer = 0 }
 
-
         let res: Response = {
           assessment_id:  assessment.Id,
           category_id:    category.Id,
@@ -90,12 +88,13 @@ export default function Assess({readOnly}: FormProps) {
         total += res.answer
         if (res.improve) { star_total++ }
 
-        FormApi.addResponse(res)
+        console.log(res)
+        //FormApi.addResponse(res)
       })
       averages.push(total / category.Questions.length)
     })
     
-    let res: BasicCalc = {
+    let basicCalc: BasicCalc = {
        assessment_id:    assessment.Id,
        total_stars:      star_total,
        average_rank:     total / assessment.Categories.length,
@@ -108,14 +107,11 @@ export default function Assess({readOnly}: FormProps) {
        updated_dt:       "",
     }
 
-    FormApi.addBasicCalc(res)
+      console.log(basicCalc)
+    //FormApi.addBasicCalc(basicCalc)
     
     // go to home page
     navigate('/stats') 
-  }
-
-  const clearFormData = () => {
-
   }
 
   return (

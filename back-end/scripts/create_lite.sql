@@ -114,8 +114,8 @@ CREATE TABLE BasicCalculations (
 DROP TABLE IF EXISTS Response;
 CREATE table Response(
    assessment_id UUID NOT NULL,
-   question_id   INT NOT NULL,
    category_id   INT NOT NULL,
+   question_id   INT NOT NULL,
    answer        INT NOT NULL,
    improve       BIT NOT NULL,
    create_dt     DATETIME NOT NULL,
@@ -126,4 +126,3 @@ CREATE table Response(
    FOREIGN KEY(assessment_id) REFERENCES BasicCalculations(assessment_id),
    PRIMARY KEY (assessment_id, question_id, category_id)
 );
-

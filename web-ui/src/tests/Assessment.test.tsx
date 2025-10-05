@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import { mockComponent } from 'react-dom/test-utils';
 import Assessment from '../containers/Assessment';
 import FormApi from '../Services/FormApi';
 

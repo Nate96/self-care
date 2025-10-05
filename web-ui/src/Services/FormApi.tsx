@@ -11,7 +11,7 @@ async function getCategories(id?: string): Promise<Category[]> {
           res = await fetch(Config.getQuestions)
           let ques = await res.json()
 
-          res = await fetch(Config.response)
+          res = await fetch(Config.response + `${id}`)
           let ress = await res.json()
          
           for (const c of cats) {

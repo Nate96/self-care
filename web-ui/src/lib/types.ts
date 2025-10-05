@@ -16,10 +16,10 @@ export interface Question {
   Id:         number,
   Question:   string,
   CategoryId: number,
-  CreateDt:   Date | null,
-  UpdatedDt:  Date | null,
   Answer:     number,
   Improve:    boolean
+  CreateDt:   string | null,A
+  UpdatedDt:  string | null,
 }
 
 export interface Category {

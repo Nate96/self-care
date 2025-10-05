@@ -76,7 +76,6 @@ def get_questions() -> list[dict]:
             "create_dt":   r[3],
             "updated_dt":  r[4]})
 
-
     cursor.close()
     return questions
 
@@ -92,12 +91,12 @@ def get_responses(id: str) -> list[dict]:
     for r in rls:
         calcs.append({
             "assessment_d": r[0],
-            "question_id":  r[1],
             "category_id":  r[1],
-            "answer":       r[2],
-            "improve":      r[3], 
-            "create_dt":    r[4],
-            "updated_dt":   r[5]})
+            "question_id":  r[2],
+            "answer":       r[3],
+            "improve":      r[4], 
+            "create_dt":    r[5],
+            "updated_dt":   r[6]})
 
     cursor.close()
     return calcs
@@ -107,18 +106,18 @@ def add_response(response: Response):
     with sqlite3.connect(DATABASE) as curr:
         curr.execute("""
                      INSERT INTO Response(assessment_id, 
-                                          question_id, 
                                           category_id, 
+                                          question_id, 
                                           answer,
                                           improve,
                                           create_dt,
                                           updated_dt) 
                      VALUES(?, ?, ?, ?, ?, 
-                            DATE('now', 'localtime'),
-                            DATE('now', 'localtime'))
+                            DATETIME('now', 'localtime'),
+                            DATETIME('now', 'localtime'))
                      """, (response.assessment_id,
-                           response.question_id,
                            response.category_id,
+                           response.question_id,
                            response.answer,
                            response.improve)
                      )
@@ -164,10 +163,11 @@ def add_basic_calc(calc: BasicCalc):
                                                   social_avg,
                                                   spirit_avg,
                                                   professional_avg,
-                                                  create_dt, updated_dt)
+                                                  create_dt,
+                                                  updated_dt)
                     VALUES(?, ?, ?, ?, ?, ?, ?, ?, 
-                            DATE('now', 'localtime'),
-                            DATE('now', 'localtime'))
+                           DATETIME('now', 'localtime'),
+                           DATETIME('now', 'localtime'))
                     """, (calc.assessment_id,
                           calc.total_stars,
                           calc.average_rank,
@@ -177,4 +177,5 @@ def add_basic_calc(calc: BasicCalc):
                           calc.spirit_avg,
                           calc.professional_avg))
         cur.commit()
+
 
