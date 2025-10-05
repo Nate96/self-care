@@ -1,64 +1,56 @@
 import React, {useEffect} from 'react';
+
 import InfoTable from "../components/InfoTable";
 import { useLocation, useNavigate} from 'react-router-dom'
-import './../css/Assessment.css'
-import { Category, Form, Question, UserData, FormResponse} from '../lib/types';
+import { v4 as uuidv4 } from 'uuid'
+
+import {Category, Question, Response, BasicCalc, Assessment} from '../lib/types';
 import FormApi from '../Services/FormApi';
-import AssessmentBuilder from '../Services/AssessmentBuilder';
+
+import './../css/Assessment.css'
 
 interface FormProps { readOnly: boolean }
 
-export default function Assessment({readOnly}: FormProps) {
+export default function Assess({readOnly}: FormProps) {
   const location = useLocation();
   const { details } = location.state || {};
-  const [form, SetForm] = React.useState<Form>(details);
+  const [assessment, SetForm] = React.useState<Assessment>(details);
   const navigate = useNavigate()
 
   useEffect(() => {
-     buildForm()
+     buildAssessment()
   }, [])
 
-  async function buildForm() {
-     if(!readOnly){
-        let categories: Category[] = await FormApi.getCategories()
-        let form: Form = {
-           FormId: "uuid",
-           CreatedDt: Date(),
-           UpdateDt: Date(),
-           Categories: categories}
-        SetForm(form)
+  async function buildAssessment() {
+     if(!readOnly) {
+        let categories:  Category[] = await FormApi.getCategories()
+        let assmt: Assessment = {
+           Id:         uuidv4(),
+           Categories: categories,
+           CreatedDt:  Date(),
+           UpdateDt:   Date()
+        }
+
+        SetForm(assmt)
+     }
+     else {
+        let categories: Category[] = await FormApi.getCategories(details)
+        let assmt: Assessment = {
+           Id:         details,
+           Categories: categories,
+           CreatedDt:  "",
+           UpdateDt:   "",
+        }
+        SetForm(assmt)
      }
   }
 
-  /**
-   * builds a form for a given formId
-   * @param formId 
-   * @returns 
-   */
-  async function viewAssessment(formId: number) {
-    const categories: Category[] = await FormApi.getCategories()
-    if(readOnly) {
-      const form: Form = { FormId: 0, UserId: 0, CreatedDt: null, UpdateDt: null, Categories: [] }
-    }
-    else {
-
-    }
-    const responses: FormResponse[] = await FormApi.getAssessmentReponses(formId)
-
-    const form: Form = AssessmentBuilder.buildAssessment(categories, responses)
-    SetForm(form)
-  }
-
-  /**
-   * updates a questions' answer and improve attributes.
-   * @param prop 
-   * @param value 
-   * @param questionId 
-   * @param categoryId 
-   */
-  const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
-    let cat: Category = form.Categories.find(c => c.CategoryId == categoryId)!
-    let qu: Question = cat.Questions.find(q => q.QuestionId == questionId)!
+  const updateQuestion = (prop:       string,
+                          value:      any,
+                          questionId: number,
+                          categoryId: number): void => {
+    let cat: Category = assessment.Categories.find(c => c.Id == categoryId)!
+    let qu: Question = cat.Questions.find(q => q.Id == questionId)!
 
     if(prop == "rank"){
        qu.Answer = value
@@ -68,41 +60,57 @@ export default function Assessment({readOnly}: FormProps) {
     }
   }
 
-  
-  async function saveFormData() {
-    let userId= 2 //TODO: Delete when multi user supported
-    let formId: number = await FormApi.createForm(userId)
+  async function saveAssessment() {
+     let totals: number[] = []
+     let star_total: number = 0
+     let total: number = 0
+     let questionCount: number = 0
 
-    form.Categories.forEach(category => {
+    assessment.Categories.forEach(category => {
+      let category_total: number = 0
+
       category.Questions.forEach(question => {
-        if(question.Improve === undefined) {
-          question.Improve = false
+        if(question.Improve === undefined) { question.Improve = false }
+        if(question.Answer === undefined) { question.Answer = 0 }
+
+        let res: Response = {
+          assessment_id: assessment.Id,
+          category_id:   category.Id,
+          question_id:   question.Id,
+          answer:        question.Answer, 
+          improve:       question.Improve,
+          create_dt:     "",
+          updated_dt:    "",
         }
 
-        if(question.Answer === undefined) {
-          question.Answer = 0
-        }
+        category_total += res.answer
+        total += res.answer
+        if (res.improve) { star_total++ }
+        questionCount++
 
-        let data: UserData = {
-          UserId: userId,
-          QuestionId: question.QuestionId,
-          FormId: formId,
-          Answer: question.Answer, 
-          Improve: question.Improve
-        }
-
-        FormApi.addUserData(data)
+        FormApi.addResponse(res)
       })
+      totals.push(category_total)
     })
     
-    FormApi.createBasicCalculations(formId)
+    let basicCalc: BasicCalc = {
+       assessment_id: assessment.Id,
+       total_stars:   star_total,
+       physical:      totals[0],
+       emotional:     totals[1],
+       social:        totals[2],
+       spirit:        totals[3],
+       professional:  totals[4],
+       total:         total,
+       average_rank:  parseFloat((total / questionCount).toFixed(2)),
+       create_dt:     "",
+       updated_dt:    "",
+    }
+
+    FormApi.addBasicCalc(basicCalc)
     
     // go to home page
-    navigate('/') 
-  }
-
-  const clearFormData = () => {
-
+    navigate('/stats') 
   }
 
   return (
@@ -115,9 +123,25 @@ export default function Assessment({readOnly}: FormProps) {
           }
 
           <div id="text">
-            <p><span>Self-care</span> activities are the things you do to maintain good health and improve well-being. You'll  find that many of these activities are things you already do as part of your normal routine.</p>
-            <p>In this assessment you will think about how frequently, or how well, you are performing different  self-care activities. The goal of this assessment is to help you learn about your self-care needs  by spotting patterns and recognizing areas of your life that need more attention.</p>
-            <p>There are no right or wrong answers on this assessment. There may be activities that you have  no interest in, and other activities may not be included. This list is not comprehensive, but serves  as a starting point for thinking about your self-care needs.</p>
+            <p>
+               <span>Self-care</span>
+               activities are the things you do to maintain good health and
+               improve well-being. You'll  find that many of these activities are
+               things you already do as part of your normal routine.
+            </p>
+            <p>
+               In this assessment you will think about how frequently, or how
+               well, you are performing different  self-care activities. The
+               goal of this assessment is to help you learn about your self-care
+               needs  by spotting patterns and recognizing areas of your life
+               that need more attention.
+            </p>
+            <p>
+               There are no right or wrong answers on this assessment. There may
+               be activities that you have  no interest in, and other activities
+               may not be included. This list is not comprehensive, but serves
+               as a starting point for thinking about your self-care needs.
+            </p>
           </div>
 
           <div className="legend">
@@ -145,7 +169,7 @@ export default function Assessment({readOnly}: FormProps) {
         </div>
 
         <div className="panel data-panel">
-          {form?.Categories?.map((category, index) => {
+          {assessment?.Categories?.map((category, index) => {
             return <InfoTable
                       key={index}
                       category={category} 
@@ -156,11 +180,9 @@ export default function Assessment({readOnly}: FormProps) {
       
       {!readOnly && 
         <div className="button-container">
-          <button className="global-btn" onClick={saveFormData}>Save</button>
-          <button className="global-btn" onClick={clearFormData}>Clear All</button>
+          <button className="global-btn" onClick={saveAssessment}>Save</button>
         </div>
       }
-      
     </div>
   );
 }

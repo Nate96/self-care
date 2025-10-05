@@ -1,118 +1,113 @@
-import {Assessment, Category, Question, DBQuestions, BasicAnalyse, Categories, FormResponse } from './../lib/types'
+import { BasicCalc, Category, Question, Response } from './../lib/types'
 import Config from '../config'
 
-async function getCategories(): Promise<Category[]> {
-    try {
-       let categories: Category[] = []
-       let res = await fetch(Config.getCategories)
-       let cats = await res.json()
+async function getCategories(id?: string): Promise<Category[]> {
+   let categories: Category[] = []
+   let cats: any[] = []
+   let ques: any[] = []
+   let ress: any = []
 
-       res = await fetch(Config.getQuestions)
-       let ques = await res.json()
-       console.log('quesions', ques)
-
-       for (const c of cats){
-          let category: Category = {
-             CategoryId: c.id,
-             Category:   c.category,
-             Questions:  [],
-             CreateDt:   c.create_dt,
-             UpdatedDt:  c.updated_dt} 
-
-          for (const q of ques) {
-             if (q.category_id == c.id) {
-                let qu: Question = {
-                   QuestionId: q.id,
-                   Question:   q.question,
-                   CategoryId: q.CategoryId, 
-                   CreateDt:   q.CreateDt,
-                   UpdatedDt:  q.UpdatedDt,
-                   Answer:     0,
-                   Improve:    false}
-
-                category.Questions.push(qu)
-             }
-          }
-         categories.push(category)
-       }
-
-       console.log('cats', categories)
-      return categories
-    }
-    catch(error){
-      console.log(error)
-      return []
-    }
-}
-
-async function getAssessments(): Promise<Assessment[]> {
-    let body
-    try {
-      let response = await fetch(Config.assessments)
-      body = await response.json()
-  
-      return body
-    }
-    catch(error){
-      console.log(error)
-    }
-  
-    return body
-}
-
-
-async function addAssessment(assessment: Assessment): Promise<string> { 
    try {
-      await fetch(Config.assessments, {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify(assessment)
+      let  res = await fetch(Config.getCategories)
+      cats = await res.json()
 
-      })
-      return `Added ${assessment.id}`
+      res = await fetch(Config.getQuestions)
+      ques = await res.json()
+
+      if (id) {
+         res = await fetch(Config.response + `${id}`)
+         ress = await res.json()
+      }
    }
    catch(error) {
-      return `Faild to inset ${assessment.id}`
-
+      console.log(error)
    }
+
+   cats.forEach((c: any) => {
+      let category: Category = {
+         Id:         c.id,
+         Category:   c.category,
+         Questions:  [],
+         CreateDt:   c.create_dt,
+         UpdatedDt:  c.updated_dt
+      }
+
+      let categoryQuestions = ques.filter((q: any) => q.category_id == c.id)
+
+      categoryQuestions.forEach((q: any) => {
+         let questionsRes = ress.find((ress: any) => ress.question_id == q.id)
+
+         let qu: Question = {
+            Id:         q.id,
+            Question:   q.question,
+            CategoryId: q.category_id, 
+            CreateDt:   q.create_dt,
+            UpdatedDt:  q.updated_dt,
+            Answer:     questionsRes ? questionsRes.answer: 0,
+            Improve:    questionsRes ? questionsRes.improve : false 
+         }
+         category.Questions.push(qu)
+      })
+      categories.push(category)
+   })
+
+   return categories
 }
 
-async function getBasicAnalyse(userId: number): Promise<BasicAnalyse[]> {
-    let body
+
+async function getBasicCalcs(): Promise<BasicCalc[]> {
     try {
-        let response = await fetch(Config.getAnalysis)
-        body = await response.json()
-        
-        return body
+        let analysis:BasicCalc[] = []
+
+        let res = await fetch(Config.calc)
+        const rls = await res.json()
+
+        for (const r of rls) {
+           let row: BasicCalc = {
+              assessment_id: r.assessment_id,
+              total_stars:   r.total_stars, 
+              physical:      r.physical,
+              emotional:     r.emotional,
+              social:        r.social,
+              spirit:        r.spirit,
+              professional:  r.professional,
+              total:         r.total,
+              average_rank:  r.average_rank,
+              create_dt:     r.create_dt,
+              updated_dt:    r.updated_dt
+           }
+           analysis.push(row)
+        }
+        return analysis
     }
     catch(error){
         console.log(error)
+        return []
     }
     
-    return body        
+}
+
+async function addResponse(response: Response) {
+   await fetch(Config.response, {
+      method:  'POST',
+      headers: {'Content-Type': 'application/json'},
+      body:    JSON.stringify(response)
+   })
+}
+
+async function addBasicCalc(calc: BasicCalc) {
+   await fetch(Config.calc, {
+      method:  'POST',
+      headers: {'Content-Type': 'application/json'},
+      body:    JSON.stringify(calc)
+   })
 
 }
 
-async function createBasicCalculations(formId: number): Promise<string> {
-  let body
-  const requestOptions = {method: 'POST'}
-  try {
-    const resposne = await fetch(Config.createBasicCalulation + formId, requestOptions)
-    const body = await resposne.json()
-
-    return body
-  }
-  catch(error) {
-    console.log(error)
-  }
-
-  return "faild"
-}
 
 export default {
   getCategories, 
-  getBasicAnalyse,
-  createBasicCalculations,
-  addAssessment,
-  getAssessments
+  getBasicCalcs,
+  addResponse,
+  addBasicCalc
 }

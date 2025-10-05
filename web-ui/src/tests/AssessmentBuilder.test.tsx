@@ -4,32 +4,32 @@ import { Form, Category, Question, UserData} from "../lib/types"
 
 let categories: Category[] = [
 	{
-		"CategoryId": 1,
+		"Id": 1,
 		"Category": "Pyscial Self-Care",
 		"CreateDt": new Date,
 		"UpdatedDt": new Date,
 		"Questions": []
 	},
 	{
-		"CategoryId": 2,
+		"Id": 2,
 		"Category": "Psychological/Emotional Self-Care",
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"CategoryId": 3,
+		"Id": 3,
 		"Category": "Social Self-Care",
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"CategoryId": 4,
+		"Id": 4,
 		"Category": "Spiritual Self-Care",
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"CategoryId": 5,
+		"Id": 5,
 		"Category": "Professional Self-Care",
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
@@ -398,350 +398,350 @@ let userData: UserData[] = [
 
 let questions: Question[] = [
 	{
-		"QuestionId": 1,
+		"Id": 1,
 		"Question": "Eat healthy food",
 		"CategoryId": 1,
 		"CreateDt": new Date, 
 		"UpdatedDt":new Date 
 	},
 	{
-		"QuestionId": 2,
+		"Id": 2,
 		"Question": "Take care of personal hygiene",
 		"CategoryId": 1,
 		"CreateDt": new Date,
 		"UpdatedDt":new Date
 	},
 	{
-		"QuestionId": 3,
+		"Id": 3,
 		"Question": "Exercise",
 		"CategoryId": 1,
 		"CreateDt": new Date,
 		"UpdatedDt":new Date
 	},
 	{
-		"QuestionId": 4,
+		"Id": 4,
 		"Question": "Wear cloths that help me feel good about myself",
 		"CategoryId": 1,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date 
 	},
 	{
-		"QuestionId": 5,
+		"Id": 5,
 		"Question": "Eat regularly",
 		"CategoryId": 1,
 		"CreateDt": new Date,
     "UpdatedDt": new Date,
 	},
 	{
-		"QuestionId": 6,
+		"Id": 6,
 		"Question": "Participate in fun activites (e.g. walking, swimming, dancing, sport)",
 		"CategoryId": 1,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 7,
+		"Id": 7,
 		"Question": "Get enough sleep",
 		"CategoryId": 1,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 8,
+		"Id": 8,
 		"Question": "Go to preventative medical appointment (e.g. checkups, teeth cleanings)",
 		"CategoryId": 1,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 9,
+		"Id": 9,
 		"Question": "Rest when sick",
 		"CategoryId": 1,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 10,
+		"Id": 10,
 		"Question": "Overall physical self-care",
 		"CategoryId": 1,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 11,
+		"Id": 11,
 		"Question": "Take time off from work, school, and other obligatons",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 12,
+		"Id": 12,
 		"Question": "Participate in hobbies",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 13,
+		"Id": 13,
 		"Question": "Get away from distractions (e.g. phone, email)",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 14,
+		"Id": 14,
 		"Question": "Learn new things, unrelated to work or school",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 15,
+		"Id": 15,
 		"Question": "Exress my feelings in a healthy way (e.g. talking, creating art, journaling)",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 16,
+		"Id": 16,
 		"Question": "Recognize my own strengths and achievements",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 17,
+		"Id": 17,
 		"Question": "Go on vacations or day trips",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 18,
+		"Id": 18,
 		"Question": "Do something comforting (e.ge rewatching a favorite movie, taking a long bath)",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 19,
+		"Id": 19,
 		"Question": "Find reasons to laugh",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 20,
+		"Id": 20,
 		"Question": "Talk about my problems",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 21,
+		"Id": 21,
 		"Question": "Overall psychological and emotional self-care",
 		"CategoryId": 2,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 22,
+		"Id": 22,
 		"Question": "Spend time with people who I like",
 		"CategoryId": 3,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 23,
+		"Id": 23,
 		"Question": "Call or write to friends and family who are far away",
 		"CategoryId": 3,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 24,
+		"Id": 24,
 		"Question": "Have stimulating conversations",
 		"CategoryId": 3,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 25,
+		"Id": 25,
 		"Question": "Meet new people",
 		"CategoryId": 3,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 26,
+		"Id": 26,
 		"Question": "Spend time alone with my romantic partner",
 		"CategoryId": 3,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 27,
+		"Id": 27,
 		"Question": "Ask others for help, when needed",
 		"CategoryId": 3,
 		"CreateDt": new Date, 
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 28,
+		"Id": 28,
 		"Question": "Do enjoyable activities with other people",
 		"CategoryId": 3,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 29,
+		"Id": 29,
 		"Question": "Have intimate time with my romantic partner",
 		"CategoryId": 3,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 30,
+		"Id": 30,
 		"Question": "Keep in touch with old friends",
 		"CategoryId": 3,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 31,
+		"Id": 31,
 		"Question": "Overall social self-care",
 		"CategoryId": 3,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 32,
+		"Id": 32,
 		"Question": "Spend time in nature",
 		"CategoryId": 4,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 33,
+		"Id": 33,
 		"Question": "Meditate",
 		"CategoryId": 4,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 34,
+		"Id": 34,
 		"Question": "Pray",
 		"CategoryId": 4,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 35,
+		"Id": 35,
 		"Question": "Recognize the things that give meaning to my life",
 		"CategoryId": 4,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 36,
+		"Id": 36,
 		"Question": "Act in accordance with my morals and values",
 		"CategoryId": 4,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 37,
+		"Id": 37,
 		"Question": "Set aside time for thought and reflection",
 		"CategoryId": 4,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 38,
+		"Id": 38,
 		"Question": "Participate in a cuase that is important to me",
 		"CategoryId": 4,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 39,
+		"Id": 39,
 		"Question": "Appreciate art that is impactful to me (e.g. music, film, liteture)",
 		"CategoryId": 4,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 40,
+		"Id": 40,
 		"Question": "Overall spiritual self-care",
 		"CategoryId": 4,
 		"CreateDt": new Date,
 		"UpdatedDt":new Date
 	},
 	{
-		"QuestionId": 41,
+		"Id": 41,
 		"Question": "Improve my professional skills",
 		"CategoryId": 5,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 42,
+		"Id": 42,
 		"Question": "Say \"no\" to excessive new responsibilities",
 		"CategoryId": 5,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 43,
+		"Id": 43,
 		"Question": "Take on projects that are interesting or rewarding",
 		"CategoryId": 5,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 44,
+		"Id": 44,
 		"Question": "Learn new things related to my profession",
 		"CategoryId": 5,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 45,
+		"Id": 45,
 		"Question": "Make time to talk and build relationships with colleagues",
 		"CategoryId": 5,
 		"CreateDt": new Date,
 		"UpdatedDt":new Date
 	},
 	{
-		"QuestionId": 46,
+		"Id": 46,
 		"Question": "Take breaks during work",
 		"CategoryId": 5,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 47,
+		"Id": 47,
 		"Question": "Maintain balance between my professional and personal life",
 		"CategoryId": 5,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 48,
+		"Id": 48,
 		"Question": "Keep a comforable workspace that allows me to be successfuly",
 		"CategoryId": 5,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 49,
+		"Id": 49,
 		"Question": "Advocate for fair pay, benefits, and other needs",
 		"CategoryId": 5,
 		"CreateDt": new Date,
 		"UpdatedDt": new Date
 	},
 	{
-		"QuestionId": 50,
+		"Id": 50,
 		"Question": "Overall professional self-care",
 		"CategoryId": 5,
 		"CreateDt": new Date,
@@ -1248,9 +1248,8 @@ var expected: Form = {
 	]
 }
 
-describe('Testing Build Assessment', () => {
-    test('Build Assessment', () => {
-		let actual: Assessment = AssessmentBuilder.buildAssessment(form, questions, categories, userData)
+describe('Building Assessments', () => {
+    test('Build an Empty Assessment', () => {
       expect(actual).toStrictEqual(expected);
     })
 })

@@ -41,7 +41,6 @@ INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Particip
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Get enough sleep', 1, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Go to preventative medical appointment (e.g. checkups, teeth cleanings)', 1, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Rest when sick', 1, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
-INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Overall physical self-care', 1, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Take time off from work, school, and other obligatons', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Participate in hobbies', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
@@ -53,7 +52,6 @@ INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Go on va
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Do something comforting (e.ge rewatching a favorite movie, taking a long bath)', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Find reasons to laugh', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Talk about my problems', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
-INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Overall psychological and emotional self-care', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Spend time with people who I like', 3, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Call or write to friends and family who are far away', 3, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
@@ -64,7 +62,6 @@ INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Ask othe
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Do enjoyable activities with other people', 3, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Have intimate time with my romantic partner', 3, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Keep in touch with old friends', 3, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
-INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Overall social self-care', 3, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Spend time in nature', 4, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Meditate', 4, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
@@ -74,7 +71,6 @@ INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Act in a
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Set aside time for thought and reflection', 4, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Participate in a cuase that is important to me', 4, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Appreciate art that is impactful to me (e.g. music, film, liteture)', 4, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
-INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Overall spiritual self-care', 4, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Improve my professional skills', 5, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Say "no" to excessive new responsibilities', 5, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
@@ -85,7 +81,6 @@ INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Take bre
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Maintain balance between my professional and personal life', 5, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Keep a comforable workspace that allows me to be successfuly', 5, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Advocate for fair pay, benefits, and other needs', 5, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
-INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Overall professional self-care', 5, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 
 -- DROP TABLE IF EXISTS Users;
 -- CREATE TABLE Users (
@@ -98,27 +93,32 @@ INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Overall 
 
 -- INSERT INTO Users(UserName, Password, CreateDt, UpdateDt) VALUES('squishy', '1234', DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 
-DROP TABLE IF EXISTS Assessment;
-CREATE table Assessment(
-   id         UUID NOT NULL, 
-   QuestionId INT NOT NULL,
-   Answer     INT NOT NULL,
-   Improve    BIT NOT NULL,
-   CreateDt   DATETIME NOT NULL,
-   UpdatedDt  DATETIME NOT NULL,
-
-   FOREIGN KEY(QuestionId) REFERENCES Question(id),
-   PRIMARY KEY (id, QuestionId)
+CREATE TABLE BasicCalculations (
+   assessment_id UUID NOT NULL PRIMARY KEY,
+   total_stars   INT NOT NULL,
+   physical      INT NOT NULL,
+   emotional     INT NOT NULL,
+   social        INT NOT NULL,
+   spirit        INT NOT NULL,
+   professional  INT NOT NULL,
+   total         INT NOT NULL,
+   average_rank  FLOAT NOT NULL,
+   create_dt     DATETIME NOT NULL,
+   updated_dt    DATETIME NOT NULL
 );
 
-DROP TABLE IF EXISTS BasicCalculations;
-CREATE TABLE BasicCalculations (
-   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+DROP TABLE IF EXISTS Response;
+CREATE table Response(
    assessment_id UUID NOT NULL,
-   TotalStars INT NOT NULL,
-   AverageRank FLOAT NOT NULL,
-   CreateDt   DATETIME NOT NULL,
-   UpdatedDt  DATETIME NOT NULL,
+   category_id   INT NOT NULL,
+   question_id   INT NOT NULL,
+   answer        INT NOT NULL,
+   improve       BIT NOT NULL,
+   create_dt     DATETIME NOT NULL,
+   updated_dt    DATETIME NOT NULL,
 
-   FOREIGN KEY(assessment_id) REFERENCES Form(id)
-)
+   FOREIGN KEY(question_id) REFERENCES Question(id),
+   FOREIGN KEY(category_id) REFERENCES Category(id),
+   FOREIGN KEY(assessment_id) REFERENCES BasicCalculations(assessment_id),
+   PRIMARY KEY (assessment_id, question_id, category_id)
+);

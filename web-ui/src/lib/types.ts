@@ -1,73 +1,49 @@
-export interface BasicAnalyse {
-  FormId: number,
-  AverageRank: number, 
-  TotalStars: number,
-  CreatedDt: Date
-}
 
-export interface DBQuestions {
-  QuestionId: number,
-  Question:   string
-  CategoryId: number,
-  CreateDt:   Date | null,
-  UpdatedDt:  Date | null,
-}
+export interface BasicCalc {
+  assessment_id: string,
+  total_stars:   number,
+  physical:      number,
+  emotional:     number,
+  social:        number,
+  spirit:        number,
+  professional:  number,
+  total:         number,
+  average_rank:  number, 
+  create_dt:     string,
+  updated_dt:    string,
+} 
 
 export interface Question {
-  QuestionId: number,
-  Question:   string
+  Id:         number,
+  Question:   string,
   CategoryId: number,
-  CreateDt:   Date | null,
-  UpdatedDt:  Date | null,
   Answer:     number,
   Improve:    boolean
+  CreateDt:   string | null,
+  UpdatedDt:  string | null,
 }
-
-export interface Categories {
-   id:         number,
-   category:   string,
-   created_dt: string,
-   updated_dt: string,
-
-}
-
 
 export interface Category {
-  CategoryId: number,
-  Category: string,
-  Questions: Question[],
-  CreateDt: string | null,
-  UpdatedDt: string | null
-}
-
-export interface Form {
-  FormId: string,
-  CreatedDt: string | null,
-  UpdateDt: string | null,
-  Categories: Category[]
-}
-
-export interface UserData {
-  UserId: number, 
-  QuestionId: number, 
-  FormId: number, 
-  Answer: number, 
-  Improve: Boolean
-}
-
-export interface FormResponse {
-  CategoryId: number, 
-  QuestionId: number,
-  Question: string, 
-  Answer: number, 
-  Improve: boolean
+  Id: number,
+  Category:   string,
+  Questions:  Question[],
+  CreateDt:   string | null,
+  UpdatedDt:  string | null
 }
 
 export interface Assessment {
-   id:           string,
-   questions_id: string,
-   answer:       number,
-   improve:      boolean,
-   created_dt:   string, 
-   updated_dt:   string
+  Id:         string,
+  Categories: Category[]
+  CreatedDt:  string | null,
+  UpdateDt:   string | null,
+}
+
+export interface Response {
+   assessment_id: string
+   category_id:   number, 
+   question_id:   number,
+   answer:        number, 
+   improve:       boolean,
+   create_dt:     string,
+   updated_dt:    string,
 }
