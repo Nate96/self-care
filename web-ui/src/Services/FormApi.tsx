@@ -64,16 +64,17 @@ async function getBasicCalcs(): Promise<BasicCalc[]> {
 
         for (const r of rls) {
            let row: BasicCalc = {
-              assessment_id:    r.assessment_id,
-              total_stars:      r.average_rank, 
-              average_rank:     r.total_stars,
-              physical_avg:     r.physical_avg,
-              emotional_avg:    r.emotional_avg,
-              social_avg:       r.social_avg,
-              spirit_avg:       r.spirit_avg,
-              professional_avg: r.professional_avg,
-              create_dt:        r.create_dt,
-              updated_dt:       r.updated_dt
+              assessment_id: r.assessment_id,
+              total_stars:   r.total_stars, 
+              physical:      r.physical,
+              emotional:     r.emotional,
+              social:        r.social,
+              spirit:        r.spirit,
+              professional:  r.professional,
+              total:         r.total,
+              average_rank:  r.average_rank,
+              create_dt:     r.create_dt,
+              updated_dt:    r.updated_dt
            }
            analysis.push(row)
         }

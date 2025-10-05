@@ -99,16 +99,17 @@ INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Overall 
 -- INSERT INTO Users(UserName, Password, CreateDt, UpdateDt) VALUES('squishy', '1234', DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 
 CREATE TABLE BasicCalculations (
-   assessment_id    UUID NOT NULL PRIMARY KEY,
-   total_stars      INT NOT NULL,
-   average_rank     FLOAT NOT NULL,
-   physical_avg     FLOAT NOT NULL,
-   emotional_avg    FLOAT NOT NULL,
-   social_avg       FLOAT NOT NULL,
-   spirit_avg       FLOAT NOT NULL,
-   professional_avg FLOAT NOT NULL,
-   create_dt        DATETIME NOT NULL,
-   updated_dt       DATETIME NOT NULL
+   assessment_id UUID NOT NULL PRIMARY KEY,
+   total_stars   INT NOT NULL,
+   physical      INT NOT NULL,
+   emotional     INT NOT NULL,
+   social        INT NOT NULL,
+   spirit        INT NOT NULL,
+   professional  INT NOT NULL,
+   total         INT NOT NULL,
+   average_rank  FLOAT NOT NULL,
+   create_dt     DATETIME NOT NULL,
+   updated_dt    DATETIME NOT NULL
 );
 
 DROP TABLE IF EXISTS Response;

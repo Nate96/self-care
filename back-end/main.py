@@ -28,16 +28,17 @@ class Response(BaseModel):
     updated_dt:    str
 
 class BasicCalc(BaseModel):
-    assessment_id:    str
-    total_stars:      int
-    average_rank:     float
-    physical_avg:     float
-    emotional_avg:    float
-    social_avg:       float
-    spirit_avg:       float
-    professional_avg: float
-    create_dt:        str
-    updated_dt:       str
+    assessment_id: str
+    total_stars:   int
+    physical:      int 
+    emotional:     int 
+    social:        int 
+    spirit:        int 
+    professional:  int 
+    total:         int
+    average_rank:  float
+    create_dt:     str
+    updated_dt:    str
 
 @app.get("/")
 def read_root() -> str:
@@ -117,8 +118,8 @@ def add_response(response: Response):
                            response.category_id,
                            response.question_id,
                            response.answer,
-                           response.improve)
-                     )
+                           response.improve
+                           ))
         curr.commit()
 
     return {"status": "ok"}
@@ -133,16 +134,17 @@ def get_basic_analysis() -> list[dict]:
 
     for r in rls:
         calcs.append({
-            "assessment_id":    r[0],
-            "total_stars":      r[1],
-            "average_rank":     r[2],
-            "physical_avg":     r[3],
-            "emotional_avg":    r[4],
-            "social_avg":       r[5],
-            "spirit_avg":       r[6],
-            "professional_avg": r[7],
-            "create_dt":        r[8],
-            "updated_dt":       r[9],
+            "assessment_id": r[0],
+            "total_stars":   r[1],
+            "physical":      r[2],
+            "emotional":     r[3],
+            "social":        r[4],
+            "spirit":        r[5],
+            "professional":  r[6],
+            "total":         r[7],
+            "average_rank":  r[8],
+            "create_dt":     r[9],
+            "updated_dt":    r[10],
         })
 
     cursor.close()
@@ -155,25 +157,27 @@ def add_basic_calc(calc: BasicCalc):
         cur.execute("""
                     INSERT INTO BasicCalculations(assessment_id,
                                                   total_stars,
+                                                  physical,
+                                                  emotional,
+                                                  social,
+                                                  spirit,
+                                                  professional,
+                                                  total,
                                                   average_rank,
-                                                  physical_avg,
-                                                  emotional_avg,
-                                                  social_avg,
-                                                  spirit_avg,
-                                                  professional_avg,
                                                   create_dt,
                                                   updated_dt)
-                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, 
+                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?,
                            DATETIME('now', 'localtime'),
                            DATETIME('now', 'localtime'))
                     """, (calc.assessment_id,
                           calc.total_stars,
-                          calc.average_rank,
-                          calc.physical_avg,
-                          calc.emotional_avg,
-                          calc.social_avg,
-                          calc.spirit_avg,
-                          calc.professional_avg))
+                          calc.physical,
+                          calc.emotional,
+                          calc.social,
+                          calc.spirit,
+                          calc.professional,
+                          calc.total,
+                          calc.average_rank))
         cur.commit()
 
 

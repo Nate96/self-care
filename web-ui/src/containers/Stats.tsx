@@ -13,7 +13,6 @@ const Stats = () => {
   async function getBasicCalc() {
     const table: BasicCalc[] = await FormApi.getBasicCalcs()
     setBasicAnalyse(table)
-    console.log(table)
   }
 
   useEffect(() => {
@@ -27,13 +26,14 @@ const Stats = () => {
           <thead>
             <tr>
               <th>Date</th>
-              <th>Total Stars</th>
-              <th>Average Rank</th>
-              <th>Pysical Average</th>
-              <th>Emotional Average</th>
-              <th>Socail Average</th>
-              <th>Spirit Average</th>
-              <th>Professiontal Average</th>
+              <th>Stars</th>
+              <th>Pysical</th>
+              <th>Emotional</th>
+              <th>Social</th>
+              <th>Spirit</th>
+              <th>Professional</th>
+              <th>Total</th>
+              <th>Average</th>
             </tr>
           </thead>
           <tbody>
@@ -48,13 +48,14 @@ const Stats = () => {
                       {new Date(row.create_dt).toDateString()}
                     </Link>
                     </td>
-                  <td>{row.average_rank}</td>
-                  <td align="right">{row.total_stars}</td>
-                  <td align="right">{row.physical_avg}</td>
-                  <td align="right">{row.emotional_avg}</td>
-                  <td align="right">{row.social_avg}</td>
-                  <td align="right">{row.spirit_avg}</td>
-                  <td align="right">{row.professional_avg}</td>
+                  <td>{row.total_stars}</td>
+                  <td align="right">{row.physical}</td>
+                  <td align="right">{row.emotional}</td>
+                  <td align="right">{row.social}</td>
+                  <td align="right">{row.spirit}</td>
+                  <td align="right">{row.professional}</td>
+                  <td align="right">{row.total}</td>
+                  <td align="right">{row.average_rank}</td>
                 </tr>
               )
             })}

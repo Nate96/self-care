@@ -1,15 +1,16 @@
 
 export interface BasicCalc {
-  assessment_id:    string,
-  total_stars:      number,
-  average_rank:     number, 
-  physical_avg:     number,
-  emotional_avg:    number,
-  social_avg:       number,
-  spirit_avg:       number,
-  professional_avg: number,
-  create_dt:        string,
-  updated_dt:       string,
+  assessment_id: string,
+  total_stars:   number,
+  physical:      number,
+  emotional:     number,
+  social:        number,
+  spirit:        number,
+  professional:  number,
+  total:         number,
+  average_rank:  number, 
+  create_dt:     string,
+  updated_dt:    string,
 } 
 
 export interface Question {
