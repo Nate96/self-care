@@ -46,7 +46,7 @@ INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Take tim
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Participate in hobbies', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Get away from distractions (e.g. phone, email)', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Learn new things, unrelated to work or school', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
-INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Exress my feelings in a healthy way (e.g. talking, creating art, journaling)', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
+INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Express my feelings in a healthy way (e.g. talking, creating art, journaling)', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Recognize my own strengths and achievements', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Go on vacations or day trips', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
 INSERT INTO Question(Question, CategoryId, CreateDt, UpdatedDt) VAlUES('Do something comforting (e.ge rewatching a favorite movie, taking a long bath)', 2, DATETIME('now', 'localtime'), DATETIME('now', 'localtime'));
