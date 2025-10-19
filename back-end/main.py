@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DATABASE = './database.db'
+DATABASE = '~/.local/log/timesheet.db'
 
 class Response(BaseModel):
     assessment_id: str
