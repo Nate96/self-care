@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-origins = ['http://localhost:3000']
+origins = ['http://localhost:3000', 'http://localhost:5173']
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DATABASE = '~/.local/log/timesheet.db'
+DATABASE = '/home/knight/.local/log/timesheet.db'
 
 class Response(BaseModel):
     assessment_id: str
