@@ -1,3 +1,1 @@
-# .env file
-create a file .env for database information
-ou
+run: `uv run fastapi dev`
