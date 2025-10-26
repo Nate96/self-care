@@ -13,10 +13,7 @@ DATABASE: str = str(os.getenv('DB'))
 
 app = FastAPI()
 
-
 origins = [UI]
-
-
 
 app.add_middleware(
     CORSMiddleware,

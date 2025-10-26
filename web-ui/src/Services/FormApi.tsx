@@ -8,14 +8,14 @@ async function getCategories(id?: string): Promise<Category[]> {
    let ress: any = []
 
    try {
-      let  res = await fetch(Config.getCategories)
+      let  res = await fetch(Config.categories)
       cats = await res.json()
 
-      res = await fetch(Config.getQuestions)
+      res = await fetch(Config.questions)
       ques = await res.json()
 
       if (id) {
-         res = await fetch(Config.response + `${id}`)
+         res = await fetch(Config.response + `/${id}`)
          ress = await res.json()
       }
    }
