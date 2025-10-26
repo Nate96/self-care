@@ -1,12 +1,22 @@
 import sqlite3
+import os 
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from dotenv import load_dotenv
+
+load_dotenv()
+
+UI:       str = str(os.getenv("UI"))
+DATABASE: str = str(os.getenv('DB'))
 
 app = FastAPI()
 
-origins = ['http://localhost:3000']
+
+origins = [UI]
+
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,7 +26,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DATABASE = './database.db'
 
 class Response(BaseModel):
     assessment_id: str
