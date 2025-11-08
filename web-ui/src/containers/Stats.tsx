@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { BasicCalc } from "../lib/types";
-import "./../css/Home.css";
+import "./../css/Stats.css";
 import FormApi from "../Services/FormApi";
 
 const Stats = () => {
@@ -20,7 +20,10 @@ const Stats = () => {
   }, [])
 
   return (
-    <div className="Home">
+    <div className="Stats">
+      <div className="section">
+         <h2>Assessment Statistics</h2>
+      </div>
       <div className="card-container">
         <Table striped bordered hover>
           <thead>
