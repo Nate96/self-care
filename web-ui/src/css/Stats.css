@@ -1,0 +1,12 @@
+.Stats {
+  display:        flex;
+  flex-direction: column;
+  align-self:     center;
+  max-width:      70rem;
+}
+
+.Stats .section {
+  padding-top:    1%;
+  padding-bottom: 1%;
+  width:          100%;
+}
