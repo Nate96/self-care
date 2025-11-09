@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BasicCalc } from "../lib/types";
 import "./../css/Stats.css";
 import FormApi from "../Services/FormApi";
+import { LineChart } from '@mui/x-charts/LineChart';
 
 const Stats = () => {
   const [basicAnalyse, setBasicAnalyse] = useState<BasicCalc[]>()
@@ -19,10 +20,41 @@ const Stats = () => {
     getBasicCalc()
   }, [])
 
+  console.log(basicAnalyse?.map((x) => x.create_dt))
+
   return (
     <div className="Stats">
       <div className="section">
-         <h2>Assessment Statistics</h2>
+        <LineChart
+          xAxis={[{ data: [...Array(basicAnalyse?.length).keys() ]  }]}
+          series={[
+            {
+              data: basicAnalyse?.map((x) => x.physical) || [],
+              label: 'Physical',
+            },
+            {
+              data: basicAnalyse?.map((x) => x.emotional) || [],
+              label: 'Emotional',
+            },
+            {
+              data: basicAnalyse?.map((x) => x.emotional) || [],
+              label: 'Emotional',
+            },
+            {
+              data: basicAnalyse?.map((x) => x.social) || [],
+              label: 'Social',
+            },
+            {
+              data: basicAnalyse?.map((x) => x.spirit) || [],
+              label: 'Spirit',
+            },
+            {
+              data: basicAnalyse?.map((x) => x.professional) || [],
+              label: 'Professional',
+            },
+          ]}
+          height={400}
+        />
       </div>
       <div className="card-container">
         <Table striped bordered hover>
