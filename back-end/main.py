@@ -27,6 +27,17 @@ class Response(BaseModel):
     create_dt:     str
     updated_dt:    str
 
+class Assessment(BaseModel):
+    category_id: int
+    category:    str
+    question_id: int
+    question:    str
+    answer:      int
+    improve:     bool
+    create_dt:   str
+    update_dt:   str
+
+
 class BasicCalc(BaseModel):
     assessment_id: str
     total_stars:   int
@@ -40,9 +51,83 @@ class BasicCalc(BaseModel):
     create_dt:     str
     updated_dt:    str
 
+
 @app.get("/")
 def read_root() -> str:
     return "Treat your self"
+
+@app.get("/assessment/") 
+def get_new_assessment() -> list[Response]:
+    cursor = sqlite3.connect(DATABASE).cursor()
+    rls = cursor.execute(
+            f"""
+            SELECT 
+               c.id         AS category_id
+               , c.category
+               , q.id       AS question_id
+               , q.Question 
+               , 0          AS Answer
+               , False      AS Improve 
+               , q.CreateDt
+               , q.UpdatedDt
+            From Question q
+            JOIN Category c ON q.CategoryId = c.id
+            ORDER BY c.id ASC;
+            """)
+
+    assessment = []
+
+    for r in rls:
+        assessment.append({
+            "category_id": r[0], 
+            "category":    r[1], 
+            "question_id": r[2], 
+            "question":    r[3], 
+            "answer":      r[4], 
+            "improve":     r[5], 
+            "create_dt":   r[6], 
+            "update_dt":   r[7] 
+            })
+
+
+    return assessment
+
+@app.get("/assessment/{id}") 
+def get_assessment(id: str) -> list[Response]:
+    cursor = sqlite3.connect(DATABASE).cursor()
+    rls = cursor.execute(
+            f"""
+            SELECT 
+               c.id         AS category_id
+               , c.category
+               , q.id       AS question_id
+               , q.Question 
+               , r.Answer
+               , r.Improve 
+               , r.create_dt
+               , r.update_dt
+            FROM Response r
+            JOIN Question q ON r.question_id = q.id
+            JOIN Category c ON r.category_id = c.id
+            WHERE r.assessment_id = {id}
+            ORDER BY c.id ASC;
+            """)
+
+    assessment = []
+
+    for r in rls:
+        assessment.append({
+            "category_id": r[0], 
+            "category":    r[1], 
+            "question_id": r[2], 
+            "question":    r[3], 
+            "answer":      r[4], 
+            "improve":     r[5], 
+            "create_dt":   r[6], 
+            "update_dt":   r[7] 
+            })
+
+    return assessment
 
 
 @app.get("/categories/")
