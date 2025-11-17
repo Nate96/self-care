@@ -1,4 +1,4 @@
-import { BasicCalc, Category, Question, Response } from './../lib/types'
+import { Assessment, BasicCalc, Category, Question, Response } from './../lib/types'
 import Config from '../config'
 
 async function getCategories(id?: string): Promise<Category[]> {
@@ -104,10 +104,112 @@ async function addBasicCalc(calc: BasicCalc) {
 
 }
 
+async function getAssessment(id: string): Promise<Assessment> {
+   let rsl
+
+   try {
+      if (id) {
+         rsl = await fetch(Config.assessment + `/${id}`)
+      }
+      else {
+         rsl = await fetch(Config.assessment)
+      }
+
+      rsl = await rsl.json()
+      let categories: Category[] = []
+
+      for (let current = 0; current < rsl.length; current++) {
+         if (current > 0) {
+            let previous = current - 1
+
+            if (rsl[current].category_id == rsl[previous].category_id) {
+               let question: Question = {
+                  Id:         rsl[current].question_id,
+                  Question:   rsl[current].question,
+                  CategoryId: rsl[current].category_id,
+                  Answer:     rsl[current].answer,
+                  Improve:    rsl[current].improve,
+                  CreateDt:   rsl[current].create_dt,
+                  UpdatedDt:  rsl[current].updated_dt
+               }
+
+               categories[rsl.category_id - 1].Questions.push(question)
+            }
+            else {
+               let category: Category = {
+                  Id:        rsl[current].category_id,
+                  Category:  rsl[current].category,
+                  Questions: [],
+                  CreateDt:  rsl[current].create_dt,
+                  UpdatedDt: rsl[current].updated_dt,
+               }
+               categories.push(category)
+
+               let question: Question = {
+                  Id:         rsl[current].question_id,
+                  Question:   rsl[current].question,
+                  CategoryId: rsl[current].category_id,
+                  Answer:     rsl[current].answer,
+                  Improve:    rsl[current].improve,
+                  CreateDt:   rsl[current].create_dt,
+                  UpdatedDt:  rsl[current].updated_dt
+               }
+
+               category = categories[rsl.category_id - 1]
+               category.Questions.push(question)
+
+            }
+         }
+         else {
+            let category: Category = {
+               Id:        rsl[current].category_id,
+               Category:  rsl[current].category,
+               Questions: [],
+               CreateDt:  rsl[current].create_dt,
+               UpdatedDt: rsl[current].updated_dt,
+            }
+
+            let question: Question = {
+               Id:         rsl[current].question_id,
+               Question:   rsl[current].question,
+               CategoryId: rsl[current].category_id,
+               Answer:     rsl[current].answer,
+               Improve:    rsl[current].improve,
+               CreateDt:   rsl[current].create_dt,
+               UpdatedDt:  rsl[current].updated_dt
+            }
+
+            category.Questions.push(question)
+            categories.push(category)
+         }
+
+         let assessment: Assessment = {
+            Id:         "",
+            Categories: categories,
+            CreatedDt:  rsl[0].create_dt,
+            UpdateDt:   rsl[0].updated_dt
+         }
+
+         return assessment
+      }
+
+   }
+   catch(error) { console.log(error) }
+
+    let assessment: Assessment = {
+       Id:         "",
+       Categories: [],
+       CreatedDt:  "",
+       UpdateDt:   ""
+    }
+    return assessment
+}
+
 
 export default {
   getCategories, 
   getBasicCalcs,
   addResponse,
-  addBasicCalc
+  addBasicCalc,
+  getAssessment
 }
