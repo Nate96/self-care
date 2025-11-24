@@ -56,20 +56,20 @@ class BasicCalc(BaseModel):
 def read_root() -> str:
     return "Treat your self"
 
-@app.get("/assessment/") 
-def get_new_assessment() -> list[Response]:
+@app.get("/assessment") 
+def get_new_assessment() -> list[Assessment]:
     cursor = sqlite3.connect(DATABASE).cursor()
     rls = cursor.execute(
             f"""
             SELECT 
-               c.id         AS category_id
+               c.id AS category_id
                , c.category
-               , q.id       AS question_id
+               , q.id AS question_id
                , q.Question 
-               , 0          AS Answer
-               , False      AS Improve 
-               , q.CreateDt
-               , q.UpdatedDt
+               , 0 AS Answer
+               , False AS Improve 
+               , "" AS create_dt
+               , "" AS updated_dt
             From Question q
             JOIN Category c ON q.CategoryId = c.id
             ORDER BY c.id ASC;
@@ -89,14 +89,13 @@ def get_new_assessment() -> list[Response]:
             "update_dt":   r[7] 
             })
 
-
     return assessment
 
 @app.get("/assessment/{id}") 
-def get_assessment(id: str) -> list[Response]:
+def get_assessment(id: str) -> list[Assessment]:
     cursor = sqlite3.connect(DATABASE).cursor()
     rls = cursor.execute(
-            f"""
+            """
             SELECT 
                c.id         AS category_id
                , c.category
@@ -105,13 +104,13 @@ def get_assessment(id: str) -> list[Response]:
                , r.Answer
                , r.Improve 
                , r.create_dt
-               , r.update_dt
+               , r.updated_dt
             FROM Response r
             JOIN Question q ON r.question_id = q.id
             JOIN Category c ON r.category_id = c.id
-            WHERE r.assessment_id = {id}
+            WHERE r.assessment_id = ?
             ORDER BY c.id ASC;
-            """)
+            """, (id,))
 
     assessment = []
 

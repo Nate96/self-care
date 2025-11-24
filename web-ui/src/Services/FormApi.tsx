@@ -106,6 +106,7 @@ async function addBasicCalc(calc: BasicCalc) {
 
 async function getAssessment(id: string): Promise<Assessment> {
    let rsl
+   console.log(`Debug, getAssessment, id: ${id}`)
 
    try {
       if (id) {
@@ -116,9 +117,12 @@ async function getAssessment(id: string): Promise<Assessment> {
       }
 
       rsl = await rsl.json()
+      console.log(JSON.stringify(rsl, null, 2))
+
       let categories: Category[] = []
 
       for (let current = 0; current < rsl.length; current++) {
+         console.log(`Bebug, Current: ${current}, ${JSON.stringify(rsl[current])}, ${rsl.length}`)
          if (current > 0) {
             let previous = current - 1
 
@@ -133,7 +137,7 @@ async function getAssessment(id: string): Promise<Assessment> {
                   UpdatedDt:  rsl[current].updated_dt
                }
 
-               categories[rsl.category_id - 1].Questions.push(question)
+               categories[question.CategoryId - 1].Questions.push(question)
             }
             else {
                let category: Category = {
@@ -155,7 +159,7 @@ async function getAssessment(id: string): Promise<Assessment> {
                   UpdatedDt:  rsl[current].updated_dt
                }
 
-               category = categories[rsl.category_id - 1]
+               category = categories[question.CategoryId - 1]
                category.Questions.push(question)
 
             }
@@ -183,16 +187,16 @@ async function getAssessment(id: string): Promise<Assessment> {
             categories.push(category)
          }
 
-         let assessment: Assessment = {
-            Id:         "",
-            Categories: categories,
-            CreatedDt:  rsl[0].create_dt,
-            UpdateDt:   rsl[0].updated_dt
-         }
-
-         return assessment
       }
 
+      let assessment: Assessment = {
+         Id:         rsl[0].assessment_id,
+         Categories: categories,
+         CreatedDt:  rsl[0].created_dt,
+         UpdateDt:   rsl[0].updated_dt
+      }
+
+      return assessment
    }
    catch(error) { console.log(error) }
 

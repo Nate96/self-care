@@ -22,12 +22,9 @@ export default function Assess({readOnly}: FormProps) {
   }, [])
 
   async function buildAssessment() {
+     console.log("Assessment: ", await FormApi.getAssessment(details))
+
      if(readOnly) {
-        let assm = await FormApi.getAssessment(details.Id)
-
-        console.log(assm)
-
-
         let categories:  Category[] = await FormApi.getCategories()
         let assmt: Assessment = {
            Id:         uuidv4(),
