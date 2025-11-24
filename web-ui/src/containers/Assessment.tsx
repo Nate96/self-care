@@ -18,33 +18,12 @@ export default function Assess({readOnly}: FormProps) {
   const navigate = useNavigate()
 
   useEffect(() => {
-     buildAssessment()
+       buildAssessment()
   }, [])
 
   async function buildAssessment() {
-     console.log("Assessment: ", await FormApi.getAssessment(details))
-
-     if(readOnly) {
-        let categories:  Category[] = await FormApi.getCategories()
-        let assmt: Assessment = {
-           Id:         uuidv4(),
-           Categories: categories,
-           CreatedDt:  Date(),
-           UpdateDt:   Date()
-        }
-
-        SetForm(assmt)
-     }
-     else {
-        let categories: Category[] = await FormApi.getCategories(details)
-        let assmt: Assessment = {
-           Id:         details,
-           Categories: categories,
-           CreatedDt:  "",
-           UpdateDt:   "",
-        }
-        SetForm(assmt)
-     }
+     let assessment: Assessment = await FormApi.getAssessment(details)
+     SetForm(assessment)
   }
 
   const updateQuestion = (prop:       string,

@@ -129,41 +129,6 @@ def get_assessment(id: str) -> list[Assessment]:
     return assessment
 
 
-@app.get("/categories/")
-def get_categories() -> list[dict]:
-    cursor = sqlite3.connect(DATABASE).cursor()
-    rls = cursor.execute("SELECT * FROM Category;").fetchall()
-
-    categories: list[dict] = []
-
-    for r in rls:
-        categories.append({
-            "id":         r[0],
-            "category":   r[1],
-            "create_dt":  r[2],
-            "updated_dt": r[3]})
-    
-    cursor.close()
-    return categories
-
-@app.get("/questions/")
-def get_questions() -> list[dict]:
-    cursor = sqlite3.connect(DATABASE).cursor()
-    rls = cursor.execute("SELECT * FROM Question;").fetchall()
-
-    questions: list[dict] =[]
-
-    for r in rls:
-        questions.append({
-            "id":          r[0],
-            "question":    r[1],
-            "category_id": r[2],
-            "create_dt":   r[3],
-            "updated_dt":  r[4]})
-
-    cursor.close()
-    return questions
-
 @app.get("/responses/{id}") 
 def get_responses(id: str) -> list[dict]:
     cursor = sqlite3.connect(DATABASE).cursor()
@@ -263,5 +228,3 @@ def add_basic_calc(calc: BasicCalc):
                           calc.total,
                           calc.average_rank))
         cur.commit()
-
-

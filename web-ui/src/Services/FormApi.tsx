@@ -1,60 +1,6 @@
 import { Assessment, BasicCalc, Category, Question, Response } from './../lib/types'
 import Config from '../config'
 
-async function getCategories(id?: string): Promise<Category[]> {
-   let categories: Category[] = []
-   let cats: any[] = []
-   let ques: any[] = []
-   let ress: any = []
-
-   try {
-      let  res = await fetch(Config.getCategories)
-      cats = await res.json()
-
-      res = await fetch(Config.getQuestions)
-      ques = await res.json()
-
-      if (id) {
-         res = await fetch(Config.response + `${id}`)
-         ress = await res.json()
-      }
-   }
-   catch(error) {
-      console.log(error)
-   }
-
-   cats.forEach((c: any) => {
-      let category: Category = {
-         Id:         c.id,
-         Category:   c.category,
-         Questions:  [],
-         CreateDt:   c.create_dt,
-         UpdatedDt:  c.updated_dt
-      }
-
-      let categoryQuestions = ques.filter((q: any) => q.category_id == c.id)
-
-      categoryQuestions.forEach((q: any) => {
-         let questionsRes = ress.find((ress: any) => ress.question_id == q.id)
-
-         let qu: Question = {
-            Id:         q.id,
-            Question:   q.question,
-            CategoryId: q.category_id, 
-            CreateDt:   q.create_dt,
-            UpdatedDt:  q.updated_dt,
-            Answer:     questionsRes ? questionsRes.answer: 0,
-            Improve:    questionsRes ? questionsRes.improve : false 
-         }
-         category.Questions.push(qu)
-      })
-      categories.push(category)
-   })
-
-   return categories
-}
-
-
 async function getBasicCalcs(): Promise<BasicCalc[]> {
     try {
         let analysis:BasicCalc[] = []
@@ -211,7 +157,6 @@ async function getAssessment(id: string): Promise<Assessment> {
 
 
 export default {
-  getCategories, 
   getBasicCalcs,
   addResponse,
   addBasicCalc,
