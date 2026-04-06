@@ -6,3 +6,5 @@ database.db
 __pycache__/
 src/backend_end.egg-info
 
+.env
+

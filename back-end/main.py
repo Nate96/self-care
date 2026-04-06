@@ -14,6 +14,7 @@ DATABASE: str = str(os.getenv('DB'))
 app = FastAPI()
 
 origins = [UI]
+origins = ['http://localhost:3000', 'http://localhost:5173']
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,7 +23,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 class Response(BaseModel):
     assessment_id: str

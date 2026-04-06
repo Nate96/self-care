@@ -41,6 +41,10 @@ const Stats = () => {
               label: 'Emotional',
             },
             {
+              data: basicAnalyse?.map((x) => x.emotional) || [],
+              label: 'Emotional',
+            },
+            {
               data: basicAnalyse?.map((x) => x.social) || [],
               label: 'Social',
             },
