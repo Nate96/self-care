@@ -41,10 +41,6 @@ const Stats = () => {
               label: 'Emotional',
             },
             {
-              data: basicAnalyse?.map((x) => x.emotional) || [],
-              label: 'Emotional',
-            },
-            {
               data: basicAnalyse?.map((x) => x.social) || [],
               label: 'Social',
             },
@@ -65,6 +61,7 @@ const Stats = () => {
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
+              <TableCell align="center">#</TableCell>
               <TableCell align="center">Date</TableCell>
               <TableCell align="right">Stars</TableCell>
               <TableCell align="right">Physical</TableCell>
@@ -77,11 +74,12 @@ const Stats = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {basicAnalyse?.map((row, index, arr) => (
+            {basicAnalyse?.map((row, index) => (
               <TableRow
                 key={index}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
+                <TableCell align="right">{index}</TableCell>
                 <TableCell component="th" scope="row">
                   <Link
                     to="/view-assessment" 
