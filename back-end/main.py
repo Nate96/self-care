@@ -33,6 +33,17 @@ class Response(BaseModel):
     create_dt:     str
     updated_dt:    str
 
+class Assessment(BaseModel):
+    category_id: int
+    category:    str
+    question_id: int
+    question:    str
+    answer:      int
+    improve:     bool
+    create_dt:   str
+    update_dt:   str
+
+
 class BasicCalc(BaseModel):
     assessment_id: str
     total_stars:   int
@@ -46,45 +57,83 @@ class BasicCalc(BaseModel):
     create_dt:     str
     updated_dt:    str
 
+
 @app.get("/")
 def read_root() -> str:
     return "Treat your self"
 
-
-@app.get("/categories/")
-def get_categories() -> list[dict]:
+@app.get("/assessment") 
+def get_new_assessment() -> list[Assessment]:
     cursor = sqlite3.connect(DATABASE).cursor()
-    rls = cursor.execute("SELECT * FROM Category;").fetchall()
+    rls = cursor.execute(
+            f"""
+            SELECT 
+               c.id AS category_id
+               , c.category
+               , q.id AS question_id
+               , q.Question 
+               , 0 AS Answer
+               , False AS Improve 
+               , "" AS create_dt
+               , "" AS updated_dt
+            From Question q
+            JOIN Category c ON q.CategoryId = c.id
+            ORDER BY c.id ASC;
+            """)
 
-    categories: list[dict] = []
+    assessment = []
 
     for r in rls:
-        categories.append({
-            "id":         r[0],
-            "category":   r[1],
-            "create_dt":  r[2],
-            "updated_dt": r[3]})
-    
-    cursor.close()
-    return categories
+        assessment.append({
+            "category_id": r[0], 
+            "category":    r[1], 
+            "question_id": r[2], 
+            "question":    r[3], 
+            "answer":      r[4], 
+            "improve":     r[5], 
+            "create_dt":   r[6], 
+            "update_dt":   r[7] 
+            })
 
-@app.get("/questions/")
-def get_questions() -> list[dict]:
+    return assessment
+
+@app.get("/assessment/{id}") 
+def get_assessment(id: str) -> list[Assessment]:
     cursor = sqlite3.connect(DATABASE).cursor()
-    rls = cursor.execute("SELECT * FROM Question;").fetchall()
+    rls = cursor.execute(
+            """
+            SELECT 
+               c.id         AS category_id
+               , c.category
+               , q.id       AS question_id
+               , q.Question 
+               , r.Answer
+               , r.Improve 
+               , r.create_dt
+               , r.updated_dt
+            FROM Response r
+            JOIN Question q ON r.question_id = q.id
+            JOIN Category c ON r.category_id = c.id
+            WHERE r.assessment_id = ?
+            ORDER BY c.id ASC;
+            """, (id,))
 
-    questions: list[dict] =[]
+    assessment = []
 
     for r in rls:
-        questions.append({
-            "id":          r[0],
-            "question":    r[1],
-            "category_id": r[2],
-            "create_dt":   r[3],
-            "updated_dt":  r[4]})
+        assessment.append({
+            "category_id": r[0], 
+            "category":    r[1], 
+            "question_id": r[2], 
+            "question":    r[3], 
+            "answer":      r[4], 
+            "improve":     r[5], 
+            "create_dt":   r[6], 
+            "update_dt":   r[7] 
+            })
 
-    cursor.close()
-    return questions
+    return assessment
+
 
 @app.get("/responses/{id}") 
 def get_responses(id: str) -> list[dict]:
@@ -185,5 +234,3 @@ def add_basic_calc(calc: BasicCalc):
                           calc.total,
                           calc.average_rank))
         cur.commit()
-
-

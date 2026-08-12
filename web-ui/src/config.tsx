@@ -4,6 +4,7 @@ const Config = {
    getAnalysis:   "http://localhost:8000/basic-analysis",
    calc:          "http://localhost:8000/basic-calc",
    response:      "http://localhost:8000/responses/",
+   assessment:    "http://localhost:8000/assessment",
 }
 
 export default Config
